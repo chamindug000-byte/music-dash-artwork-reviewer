@@ -1,0 +1,234 @@
+{
+    "platform_requirements": {
+        "spotify": {
+            "min_size": 640,
+            "max_size": 3000,
+            "aspect_ratio": 1.0,
+            "formats": [
+                "jpeg",
+                "jpg",
+                "png"
+            ],
+            "max_file_size": 10485760,
+            "min_file_size": 102400,
+            "color_space": "RGB",
+            "dpi": 72,
+            "name": "Spotify",
+            "enabled": true
+        },
+        "apple": {
+            "min_size": 1400,
+            "max_size": 3000,
+            "aspect_ratio": 1.0,
+            "formats": [
+                "jpeg",
+                "jpg",
+                "png"
+            ],
+            "max_file_size": 10485760,
+            "min_file_size": 102400,
+            "dpi": 72,
+            "color_space": "RGB",
+            "name": "Apple Music",
+            "enabled": true
+        },
+        "youtube": {
+            "min_size": 2560,
+            "max_size": 4096,
+            "aspect_ratio": 1.0,
+            "formats": [
+                "jpeg",
+                "jpg",
+                "png"
+            ],
+            "max_file_size": 10485760,
+            "min_file_size": 102400,
+            "color_space": "RGB",
+            "dpi": 72,
+            "name": "YouTube Music",
+            "enabled": true
+        },
+        "amazon": {
+            "min_size": 1400,
+            "max_size": 3000,
+            "aspect_ratio": 1.0,
+            "formats": [
+                "jpeg",
+                "jpg",
+                "png"
+            ],
+            "max_file_size": 10485760,
+            "min_file_size": 102400,
+            "color_space": "RGB",
+            "dpi": 72,
+            "name": "Amazon Music",
+            "enabled": true
+        },
+        "deezer": {
+            "min_size": 1400,
+            "max_size": 4000,
+            "aspect_ratio": 1.0,
+            "formats": [
+                "jpeg",
+                "jpg",
+                "png"
+            ],
+            "max_file_size": 10485760,
+            "min_file_size": 102400,
+            "color_space": "RGB",
+            "dpi": 72,
+            "name": "Deezer",
+            "enabled": true
+        },
+        "tidal": {
+            "min_size": 1600,
+            "max_size": 3000,
+            "aspect_ratio": 1.0,
+            "formats": [
+                "jpeg",
+                "jpg",
+                "png"
+            ],
+            "max_file_size": 10485760,
+            "min_file_size": 102400,
+            "color_space": "RGB",
+            "dpi": 72,
+            "name": "Tidal",
+            "enabled": true
+        },
+        "soundcloud": {
+            "min_size": 1000,
+            "max_size": 5000,
+            "aspect_ratio": 1.0,
+            "formats": [
+                "jpeg",
+                "jpg",
+                "png"
+            ],
+            "max_file_size": 10485760,
+            "min_file_size": 102400,
+            "color_space": "RGB",
+            "dpi": 72,
+            "name": "SoundCloud",
+            "enabled": true
+        },
+        "musicdash": {
+            "min_size": 1400,
+            "max_size": 3000,
+            "aspect_ratio": 1.0,
+            "formats": [
+                "jpeg",
+                "jpg",
+                "png"
+            ],
+            "max_file_size": 10485760,
+            "min_file_size": 102400,
+            "color_space": "RGB",
+            "dpi": 72,
+            "name": "Music Dash",
+            "enabled": true
+        }
+    },
+    "general_requirements": {
+        "no_watermarks": {
+            "description": "No watermarks",
+            "severity": "high",
+            "enabled": true
+        },
+        "no_copyright_text": {
+            "description": "No copyright text (\u00a9, \u00ae, \u2122)",
+            "severity": "high",
+            "enabled": true
+        },
+        "no_website_urls": {
+            "description": "No website URLs",
+            "severity": "high",
+            "enabled": true
+        },
+        "no_social_handles": {
+            "description": "No social media handles",
+            "severity": "high",
+            "enabled": true
+        },
+        "no_explicit_content": {
+            "description": "No explicit content",
+            "severity": "high",
+            "enabled": true
+        },
+        "no_blurry_images": {
+            "description": "Not blurry",
+            "severity": "medium",
+            "enabled": true
+        },
+        "no_pixelated_images": {
+            "description": "Not pixelated",
+            "severity": "medium",
+            "enabled": true
+        },
+        "no_borders_frames": {
+            "description": "No borders or frames",
+            "severity": "medium",
+            "enabled": true
+        },
+        "no_collages": {
+            "description": "Not a collage of multiple images",
+            "severity": "medium",
+            "enabled": true
+        },
+        "no_placeholder_images": {
+            "description": "No placeholder or stock images",
+            "severity": "high",
+            "enabled": true
+        },
+        "no_screenshot_images": {
+            "description": "No screenshots",
+            "severity": "high",
+            "enabled": true
+        }
+    },
+    "quality_thresholds": {
+        "sharpness_min": 100,
+        "brightness_min": 40,
+        "brightness_max": 160,
+        "contrast_min": 40,
+        "compression_quality_min": 80,
+        "edge_density_watermark_threshold": 0.1,
+        "text_likelihood_threshold": 0.05,
+        "pixelation_diff_threshold": 30,
+        "color_variance_threshold": 10,
+        "saturation_min": 20,
+        "saturation_max": 200
+    },
+    "text_detection": {
+        "forbidden_terms": [
+            "copyright",
+            "\u00a9",
+            "\u00ae",
+            "\u2122",
+            "www.",
+            ".com",
+            ".net",
+            ".org",
+            "@",
+            "instagram",
+            "facebook",
+            "twitter",
+            "tiktok",
+            "youtube",
+            "soundcloud",
+            "spotify",
+            "apple music",
+            "amazon music",
+            "deezer",
+            "tidal",
+            "promo",
+            "free download",
+            "explicit",
+            "sample",
+            "unauthorized"
+        ],
+        "min_text_length": 3,
+        "max_text_density": 0.05
+    },
+    "last_updated": "2025-08-23T10:47:24.788848"
+}

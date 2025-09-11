@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit {{ rules.name }} Rules</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">Edit {{ rules.name }} Rules</a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link" href="{{ url_for('admin_dashboard') }}">Back to Dashboard</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>{{ rules.name }} Requirements</h5>
+                    </div>
+                    <div class="card-body">
+                        <form method="POST">
+                            <div class="mb-3 form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="enabled" name="enabled" {% if rules.enabled %}checked{% endif %}>
+                                <label class="form-check-label" for="enabled">Enable this platform</label>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="name" class="form-label">Display Name</label>
+                                <input type="text" class="form-control" id="name" name="name" value="{{ rules.name }}" required>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="min_size" class="form-label">Minimum Size (px)</label>
+                                    <input type="number" class="form-control" id="min_size" name="min_size" value="{{ rules.min_size }}" required min="1">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="max_size" class="form-label">Maximum Size (px)</label>
+                                    <input type="number" class="form-control" id="max_size" name="max_size" value="{{ rules.max_size }}" required min="1">
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="aspect_ratio" class="form-label">Aspect Ratio</label>
+                                <input type="number" step="0.01" class="form-control" id="aspect_ratio" name="aspect_ratio" value="{{ rules.aspect_ratio }}" required min="0.1">
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="formats" class="form-label">Formats (comma-separated)</label>
+                                <input type="text" class="form-control" id="formats" name="formats" value="{{ rules.formats|join(', ') }}" required>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="min_file_size" class="form-label">Minimum File Size (bytes)</label>
+                                    <input type="number" class="form-control" id="min_file_size" name="min_file_size" value="{{ rules.min_file_size }}" required min="1">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="max_file_size" class="form-label">Maximum File Size (bytes)</label>
+                                    <input type="number" class="form-control" id="max_file_size" name="max_file_size" value="{{ rules.max_file_size }}" required min="1">
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="color_space" class="form-label">Color Space</label>
+                                <select class="form-select" id="color_space" name="color_space" required>
+                                    <option value="RGB" {% if rules.color_space == 'RGB' %}selected{% endif %}>RGB</option>
+                                    <option value="CMYK" {% if rules.color_space == 'CMYK' %}selected{% endif %}>CMYK</option>
+                                    <option value="Grayscale" {% if rules.color_space == 'Grayscale' %}selected{% endif %}>Grayscale</option>
+                                </select>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="dpi" class="form-label">DPI</label>
+                                <input type="number" class="form-control" id="dpi" name="dpi" value="{{ rules.dpi }}" required min="1">
+                            </div>
+
+                            <button type="submit" class="btn btn-primary">Save Changes</button>
+                            <a href="{{ url_for('admin_dashboard') }}" class="btn btn-secondary">Cancel</a>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
