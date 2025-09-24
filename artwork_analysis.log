@@ -1,0 +1,167 @@
+2025-09-23 09:01:46,591 - WARNING - Neither CUDA nor MPS are available - defaulting to CPU. Note: This module is much faster with a GPU.
+2025-09-23 09:01:49,299 - INFO - EasyOCR initialized successfully
+2025-09-23 09:01:49,456 - INFO - NudeDetector initialized successfully
+2025-09-23 09:01:49,456 - INFO - Rules loaded successfully from file
+2025-09-23 09:01:49,457 - INFO - Logo templates loaded
+2025-09-23 09:01:49,457 - INFO - Weapon cascade initialized
+2025-09-23 09:01:49,462 - INFO - Rules loaded successfully from file
+2025-09-23 09:01:49,519 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-09-23 09:01:49,520 - INFO - [33mPress CTRL+C to quit[0m
+2025-09-23 09:01:49,522 - INFO -  * Restarting with stat
+2025-09-23 09:01:56,286 - WARNING - Neither CUDA nor MPS are available - defaulting to CPU. Note: This module is much faster with a GPU.
+2025-09-23 09:01:59,421 - INFO - EasyOCR initialized successfully
+2025-09-23 09:01:59,602 - INFO - NudeDetector initialized successfully
+2025-09-23 09:01:59,603 - INFO - Rules loaded successfully from file
+2025-09-23 09:01:59,603 - INFO - Logo templates loaded
+2025-09-23 09:01:59,604 - INFO - Weapon cascade initialized
+2025-09-23 09:01:59,612 - INFO - Rules loaded successfully from file
+2025-09-23 09:01:59,633 - WARNING -  * Debugger is active!
+2025-09-23 09:01:59,638 - INFO -  * Debugger PIN: 127-468-760
+2025-09-23 09:02:00,087 - INFO - 127.0.0.1 - - [23/Sep/2025 09:02:00] "GET / HTTP/1.1" 200 -
+2025-09-23 09:02:06,727 - INFO - Analysis request received
+2025-09-23 09:02:06,731 - INFO - File saved: uploads\20250923_090206_spotify-minimal-playlist-album-cover-floral-design-template-386954a3206172a6251e3639ba986976_screen.jpg
+2025-09-23 09:02:06,732 - INFO - Starting analysis of uploads\20250923_090206_spotify-minimal-playlist-album-cover-floral-design-template-386954a3206172a6251e3639ba986976_screen.jpg
+2025-09-23 09:02:06,799 - INFO - Starting watermark detection
+2025-09-23 09:02:06,800 - INFO - Starting text detection
+2025-09-23 09:02:06,801 - INFO - Starting logo detection
+2025-09-23 09:02:06,801 - INFO - Starting nudity detection
+2025-09-23 09:02:06,809 - INFO - Watermark detection completed: False
+2025-09-23 09:02:06,809 - INFO - Starting weapon detection
+2025-09-23 09:02:06,833 - INFO - Weapon detection completed: False
+2025-09-23 09:02:06,834 - INFO - Starting artist/song name detection
+2025-09-23 09:02:06,834 - INFO - Starting text detection
+2025-09-23 09:02:06,915 - INFO - Nudity detection completed: False
+2025-09-23 09:02:10,970 - INFO - Logo detection completed: 11 logos found
+2025-09-23 09:02:21,158 - INFO - Text detection completed: 3 texts found
+2025-09-23 09:02:21,166 - INFO - Text detection completed: 3 texts found
+2025-09-23 09:02:21,173 - INFO - Artist/song detection completed: Artist=False, Song=False
+2025-09-23 09:02:21,254 - INFO - Analysis completed in 14.52 seconds
+2025-09-23 09:02:21,255 - INFO - Checking requirements for platform: spotify
+2025-09-23 09:02:21,255 - INFO - Requirements check completed for spotify: 17/18 passed
+2025-09-23 09:02:21,256 - INFO - Overall status: warning (Score: 97.2%, Pass: 17, Warn: 1, Fail: 0)
+2025-09-23 09:02:21,256 - INFO - Checking requirements for platform: apple
+2025-09-23 09:02:21,257 - INFO - Requirements check completed for apple: 16/18 passed
+2025-09-23 09:02:21,257 - INFO - Overall status: fail (Score: 91.7%, Pass: 16, Warn: 1, Fail: 1)
+2025-09-23 09:02:21,257 - INFO - Checking requirements for platform: youtube
+2025-09-23 09:02:21,258 - INFO - Requirements check completed for youtube: 16/18 passed
+2025-09-23 09:02:21,258 - INFO - Overall status: fail (Score: 91.7%, Pass: 16, Warn: 1, Fail: 1)
+2025-09-23 09:02:21,259 - INFO - Checking requirements for platform: amazon
+2025-09-23 09:02:21,259 - INFO - Requirements check completed for amazon: 16/18 passed
+2025-09-23 09:02:21,260 - INFO - Overall status: fail (Score: 91.7%, Pass: 16, Warn: 1, Fail: 1)
+2025-09-23 09:02:21,260 - INFO - Checking requirements for platform: deezer
+2025-09-23 09:02:21,261 - INFO - Requirements check completed for deezer: 16/18 passed
+2025-09-23 09:02:21,261 - INFO - Overall status: fail (Score: 91.7%, Pass: 16, Warn: 1, Fail: 1)
+2025-09-23 09:02:21,262 - INFO - Checking requirements for platform: tidal
+2025-09-23 09:02:21,262 - INFO - Requirements check completed for tidal: 16/18 passed
+2025-09-23 09:02:21,263 - INFO - Overall status: fail (Score: 91.7%, Pass: 16, Warn: 1, Fail: 1)
+2025-09-23 09:02:21,263 - INFO - Checking requirements for platform: soundcloud
+2025-09-23 09:02:21,263 - INFO - Requirements check completed for soundcloud: 16/18 passed
+2025-09-23 09:02:21,264 - INFO - Overall status: fail (Score: 91.7%, Pass: 16, Warn: 1, Fail: 1)
+2025-09-23 09:02:21,264 - INFO - Checking requirements for platform: musicdash
+2025-09-23 09:02:21,265 - INFO - Requirements check completed for musicdash: 16/18 passed
+2025-09-23 09:02:21,265 - INFO - Overall status: fail (Score: 91.7%, Pass: 16, Warn: 1, Fail: 1)
+2025-09-23 09:02:21,266 - WARNING - Artwork rejected: Platform failures - ['apple', 'youtube', 'amazon', 'deezer', 'tidal', 'soundcloud', 'musicdash']
+2025-09-23 09:02:21,266 - INFO - Summary report generated
+2025-09-23 09:02:21,486 - WARNING - Issues: []
+2025-09-23 09:02:21,486 - WARNING - Platform failures: ['apple', 'youtube', 'amazon', 'deezer', 'tidal', 'soundcloud', 'musicdash']
+2025-09-23 09:02:21,487 - INFO - Temporary file cleaned up
+2025-09-23 09:02:21,494 - INFO - 127.0.0.1 - - [23/Sep/2025 09:02:21] "POST /analyze HTTP/1.1" 200 -
+2025-09-23 09:02:55,396 - INFO - Analysis request received
+2025-09-23 09:02:55,427 - INFO - File saved: uploads\20250923_090255_20250902_144037.jpg
+2025-09-23 09:02:55,428 - INFO - Starting analysis of uploads\20250923_090255_20250902_144037.jpg
+2025-09-23 09:02:55,797 - INFO - Image resized to (2000, 2000)
+2025-09-23 09:02:55,970 - INFO - Starting watermark detection
+2025-09-23 09:02:55,971 - INFO - Starting text detection
+2025-09-23 09:02:55,973 - INFO - Starting logo detection
+2025-09-23 09:02:55,975 - INFO - Starting nudity detection
+2025-09-23 09:02:56,102 - INFO - Watermark detection completed: False
+2025-09-23 09:02:56,106 - INFO - Starting weapon detection
+2025-09-23 09:02:56,190 - INFO - Nudity detection completed: True
+2025-09-23 09:02:56,191 - INFO - Starting artist/song name detection
+2025-09-23 09:02:56,191 - INFO - Starting text detection
+2025-09-23 09:02:56,211 - INFO - Weapon detection completed: True
+2025-09-23 09:02:56,220 - INFO - Logo detection completed: 2 logos found
+2025-09-23 09:03:19,917 - INFO - Text detection completed: 0 texts found
+2025-09-23 09:03:19,918 - INFO - No text detected for artist/song analysis
+2025-09-23 09:03:19,925 - INFO - Text detection completed: 0 texts found
+2025-09-23 09:03:20,105 - INFO - Analysis completed in 24.68 seconds
+2025-09-23 09:03:20,106 - INFO - Checking requirements for platform: spotify
+2025-09-23 09:03:20,107 - INFO - Requirements check completed for spotify: 16/18 passed
+2025-09-23 09:03:20,107 - INFO - Overall status: fail (Score: 88.9%, Pass: 16, Warn: 0, Fail: 2)
+2025-09-23 09:03:20,107 - INFO - Checking requirements for platform: apple
+2025-09-23 09:03:20,108 - INFO - Requirements check completed for apple: 16/18 passed
+2025-09-23 09:03:20,108 - INFO - Overall status: fail (Score: 88.9%, Pass: 16, Warn: 0, Fail: 2)
+2025-09-23 09:03:20,109 - INFO - Checking requirements for platform: youtube
+2025-09-23 09:03:20,109 - INFO - Requirements check completed for youtube: 15/18 passed
+2025-09-23 09:03:20,110 - INFO - Overall status: fail (Score: 83.3%, Pass: 15, Warn: 0, Fail: 3)
+2025-09-23 09:03:20,110 - INFO - Checking requirements for platform: amazon
+2025-09-23 09:03:20,110 - INFO - Requirements check completed for amazon: 16/18 passed
+2025-09-23 09:03:20,111 - INFO - Overall status: fail (Score: 88.9%, Pass: 16, Warn: 0, Fail: 2)
+2025-09-23 09:03:20,111 - INFO - Checking requirements for platform: deezer
+2025-09-23 09:03:20,112 - INFO - Requirements check completed for deezer: 16/18 passed
+2025-09-23 09:03:20,112 - INFO - Overall status: fail (Score: 88.9%, Pass: 16, Warn: 0, Fail: 2)
+2025-09-23 09:03:20,113 - INFO - Checking requirements for platform: tidal
+2025-09-23 09:03:20,113 - INFO - Requirements check completed for tidal: 16/18 passed
+2025-09-23 09:03:20,114 - INFO - Overall status: fail (Score: 88.9%, Pass: 16, Warn: 0, Fail: 2)
+2025-09-23 09:03:20,114 - INFO - Checking requirements for platform: soundcloud
+2025-09-23 09:03:20,114 - INFO - Requirements check completed for soundcloud: 16/18 passed
+2025-09-23 09:03:20,115 - INFO - Overall status: fail (Score: 88.9%, Pass: 16, Warn: 0, Fail: 2)
+2025-09-23 09:03:20,115 - INFO - Checking requirements for platform: musicdash
+2025-09-23 09:03:20,116 - INFO - Requirements check completed for musicdash: 16/18 passed
+2025-09-23 09:03:20,116 - INFO - Overall status: fail (Score: 88.9%, Pass: 16, Warn: 0, Fail: 2)
+2025-09-23 09:03:20,116 - WARNING - Artwork rejected: ['Explicit content detected', 'Weapons/violent content detected']
+2025-09-23 09:03:20,116 - INFO - Summary report generated
+2025-09-23 09:03:20,120 - WARNING - Issues: ['Explicit content detected', 'Weapons/violent content detected']
+2025-09-23 09:03:20,120 - WARNING - Platform failures: ['spotify', 'apple', 'youtube', 'amazon', 'deezer', 'tidal', 'soundcloud', 'musicdash']
+2025-09-23 09:03:20,121 - INFO - Temporary file cleaned up
+2025-09-23 09:03:20,130 - INFO - 127.0.0.1 - - [23/Sep/2025 09:03:20] "POST /analyze HTTP/1.1" 200 -
+2025-09-23 09:03:59,478 - INFO - Analysis request received
+2025-09-23 09:03:59,495 - INFO - File saved: uploads\20250923_090359_artwork_test_my.jpg
+2025-09-23 09:03:59,496 - INFO - Starting analysis of uploads\20250923_090359_artwork_test_my.jpg
+2025-09-23 09:03:59,940 - INFO - Image resized to (2000, 2000)
+2025-09-23 09:04:00,102 - INFO - Starting watermark detection
+2025-09-23 09:04:00,104 - INFO - Starting text detection
+2025-09-23 09:04:00,105 - INFO - Starting logo detection
+2025-09-23 09:04:00,107 - INFO - Starting nudity detection
+2025-09-23 09:04:00,223 - INFO - Watermark detection completed: False
+2025-09-23 09:04:00,223 - INFO - Starting weapon detection
+2025-09-23 09:04:00,264 - INFO - Logo detection completed: 3 logos found
+2025-09-23 09:04:00,266 - INFO - Starting artist/song name detection
+2025-09-23 09:04:00,278 - INFO - Starting text detection
+2025-09-23 09:04:00,329 - INFO - Weapon detection completed: False
+2025-09-23 09:04:00,366 - INFO - Nudity detection completed: False
+2025-09-23 09:04:18,795 - INFO - Text detection completed: 1 texts found
+2025-09-23 09:04:18,801 - INFO - Text detection completed: 1 texts found
+2025-09-23 09:04:18,802 - INFO - Artist/song detection completed: Artist=False, Song=False
+2025-09-23 09:04:19,172 - INFO - Analysis completed in 19.68 seconds
+2025-09-23 09:04:19,173 - INFO - Checking requirements for platform: spotify
+2025-09-23 09:04:19,174 - INFO - Requirements check completed for spotify: 16/18 passed
+2025-09-23 09:04:19,174 - INFO - Overall status: fail (Score: 91.7%, Pass: 16, Warn: 1, Fail: 1)
+2025-09-23 09:04:19,175 - INFO - Checking requirements for platform: apple
+2025-09-23 09:04:19,176 - INFO - Requirements check completed for apple: 16/18 passed
+2025-09-23 09:04:19,176 - INFO - Overall status: fail (Score: 91.7%, Pass: 16, Warn: 1, Fail: 1)
+2025-09-23 09:04:19,177 - INFO - Checking requirements for platform: youtube
+2025-09-23 09:04:19,177 - INFO - Requirements check completed for youtube: 15/18 passed
+2025-09-23 09:04:19,178 - INFO - Overall status: fail (Score: 86.1%, Pass: 15, Warn: 1, Fail: 2)
+2025-09-23 09:04:19,178 - INFO - Checking requirements for platform: amazon
+2025-09-23 09:04:19,179 - INFO - Requirements check completed for amazon: 16/18 passed
+2025-09-23 09:04:19,180 - INFO - Overall status: fail (Score: 91.7%, Pass: 16, Warn: 1, Fail: 1)
+2025-09-23 09:04:19,180 - INFO - Checking requirements for platform: deezer
+2025-09-23 09:04:19,180 - INFO - Requirements check completed for deezer: 16/18 passed
+2025-09-23 09:04:19,181 - INFO - Overall status: fail (Score: 91.7%, Pass: 16, Warn: 1, Fail: 1)
+2025-09-23 09:04:19,181 - INFO - Checking requirements for platform: tidal
+2025-09-23 09:04:19,182 - INFO - Requirements check completed for tidal: 16/18 passed
+2025-09-23 09:04:19,182 - INFO - Overall status: fail (Score: 91.7%, Pass: 16, Warn: 1, Fail: 1)
+2025-09-23 09:04:19,183 - INFO - Checking requirements for platform: soundcloud
+2025-09-23 09:04:19,183 - INFO - Requirements check completed for soundcloud: 16/18 passed
+2025-09-23 09:04:19,184 - INFO - Overall status: fail (Score: 91.7%, Pass: 16, Warn: 1, Fail: 1)
+2025-09-23 09:04:19,184 - INFO - Checking requirements for platform: musicdash
+2025-09-23 09:04:19,184 - INFO - Requirements check completed for musicdash: 16/18 passed
+2025-09-23 09:04:19,185 - INFO - Overall status: fail (Score: 91.7%, Pass: 16, Warn: 1, Fail: 1)
+2025-09-23 09:04:19,185 - WARNING - Artwork rejected: Platform failures - ['spotify', 'apple', 'youtube', 'amazon', 'deezer', 'tidal', 'soundcloud', 'musicdash']
+2025-09-23 09:04:19,186 - INFO - Summary report generated
+2025-09-23 09:04:19,233 - WARNING - Issues: []
+2025-09-23 09:04:19,234 - WARNING - Platform failures: ['spotify', 'apple', 'youtube', 'amazon', 'deezer', 'tidal', 'soundcloud', 'musicdash']
+2025-09-23 09:04:19,278 - INFO - Temporary file cleaned up
+2025-09-23 09:04:19,285 - INFO - 127.0.0.1 - - [23/Sep/2025 09:04:19] "POST /analyze HTTP/1.1" 200 -

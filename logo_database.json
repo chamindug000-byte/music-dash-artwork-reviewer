@@ -1,0 +1,81 @@
+{
+    "logos": [
+        {
+            "name": "Spotify",
+            "description": "Spotify logo",
+            "patterns": [
+                "spotify"
+            ],
+            "severity": "high",
+            "enabled": true
+        },
+        {
+            "name": "Apple Music",
+            "description": "Apple Music logo",
+            "patterns": [
+                "apple",
+                "itunes"
+            ],
+            "severity": "high",
+            "enabled": true
+        },
+        {
+            "name": "YouTube",
+            "description": "YouTube logo",
+            "patterns": [
+                "youtube"
+            ],
+            "severity": "high",
+            "enabled": true
+        },
+        {
+            "name": "Instagram",
+            "description": "Instagram logo",
+            "patterns": [
+                "instagram",
+                "ig"
+            ],
+            "severity": "high",
+            "enabled": true
+        },
+        {
+            "name": "Facebook",
+            "description": "Facebook logo",
+            "patterns": [
+                "facebook",
+                "fb"
+            ],
+            "severity": "high",
+            "enabled": true
+        },
+        {
+            "name": "Twitter",
+            "description": "Twitter logo",
+            "patterns": [
+                "twitter",
+                "tweet"
+            ],
+            "severity": "high",
+            "enabled": true
+        },
+        {
+            "name": "TikTok",
+            "description": "TikTok logo",
+            "patterns": [
+                "tiktok"
+            ],
+            "severity": "high",
+            "enabled": true
+        },
+        {
+            "name": "Amazon Music",
+            "description": "Amazon Music logo",
+            "patterns": [
+                "amazon"
+            ],
+            "severity": "high",
+            "enabled": true
+        }
+    ],
+    "last_updated": null
+}

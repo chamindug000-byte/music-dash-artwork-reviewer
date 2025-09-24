@@ -165,7 +165,9 @@ DEFAULT_RULES = {
         "pixelation_diff_threshold": 30,
         "color_variance_threshold": 10,
         "saturation_min": 20,
-        "saturation_max": 200
+        "saturation_max": 200,
+        "logo_contour_area_threshold": 0.01,
+        "logo_similarity_threshold": 0.7
     },
     "text_detection": {
         "forbidden_terms": [
@@ -173,6 +175,9 @@ DEFAULT_RULES = {
             "@", "instagram", "facebook", "twitter", "tiktok", "youtube",
             "soundcloud", "spotify", "apple music", "amazon music", "deezer",
             "tidal", "promo", "free download", "explicit", "sample", "unauthorized"
+        ],
+        "allowed_terms": [
+            "artist", "album", "song", "track", "ep", "lp", "single", "feat", "ft", "presents", "mix", "remix"
         ],
         "min_text_length": 3,
         "max_text_density": 0.05
@@ -201,6 +206,12 @@ def save_rules(rules):
     with open(RULES_FILE, 'w') as f:
         json.dump(rules, f, indent=4)
     return rules
+
+
+@app.route('/')
+def index():
+    """Main application page"""
+    return render_template('index.html')
 
 
 @app.route('/admin')
@@ -307,6 +318,10 @@ def edit_quality_rules():
             request.form.get('color_variance_threshold', thresholds['color_variance_threshold']))
         thresholds['saturation_min'] = float(request.form.get('saturation_min', thresholds['saturation_min']))
         thresholds['saturation_max'] = float(request.form.get('saturation_max', thresholds['saturation_max']))
+        thresholds['logo_contour_area_threshold'] = float(
+            request.form.get('logo_contour_area_threshold', thresholds.get('logo_contour_area_threshold', 0.01)))
+        thresholds['logo_similarity_threshold'] = float(
+            request.form.get('logo_similarity_threshold', thresholds.get('logo_similarity_threshold', 0.7)))
 
         # Save updated rules
         save_rules(rules)
@@ -329,6 +344,10 @@ def edit_text_rules():
         terms = request.form.get('forbidden_terms', '')
         text_rules['forbidden_terms'] = [term.strip().lower() for term in terms.split(',') if term.strip()]
 
+        # Update allowed terms
+        allowed_terms = request.form.get('allowed_terms', '')
+        text_rules['allowed_terms'] = [term.strip().lower() for term in allowed_terms.split(',') if term.strip()]
+
         # Update other text settings
         text_rules['min_text_length'] = int(request.form.get('min_text_length', text_rules['min_text_length']))
         text_rules['max_text_density'] = float(request.form.get('max_text_density', text_rules['max_text_density']))
@@ -346,38 +365,49 @@ def add_platform():
     """Add a new platform"""
     rules = load_rules()
 
-    platform_key = request.form.get('platform_key', '').strip().lower()
+    platform_key = request.form.get('platform_key', '').strip().lower().replace(' ', '_')
     platform_name = request.form.get('platform_name', '').strip()
 
-    if platform_key and platform_name and platform_key not in rules['platform_requirements']:
-        # Create new platform with default values
-        rules['platform_requirements'][platform_key] = {
-            "min_size": 1400,
-            "max_size": 3000,
-            "aspect_ratio": 1.0,
-            "formats": ["jpeg", "jpg", "png"],
-            "max_file_size": 10 * 1024 * 1024,
-            "min_file_size": 100 * 1024,
-            "color_space": "RGB",
-            "dpi": 72,
-            "name": platform_name,
-            "enabled": True
-        }
+    if not platform_key or not platform_name:
+        return "Platform key and name are required", 400
 
-        # Save updated rules
-        save_rules(rules)
+    if platform_key in rules['platform_requirements']:
+        return "Platform already exists", 400
+
+    # Create new platform with default values
+    rules['platform_requirements'][platform_key] = {
+        "min_size": 1400,
+        "max_size": 3000,
+        "aspect_ratio": 1.0,
+        "formats": ["jpeg", "jpg", "png"],
+        "max_file_size": 10 * 1024 * 1024,
+        "min_file_size": 100 * 1024,
+        "color_space": "RGB",
+        "dpi": 72,
+        "name": platform_name,
+        "enabled": True
+    }
+
+    # Save updated rules
+    save_rules(rules)
 
     return redirect(url_for('admin_dashboard'))
 
 
-@app.route('/admin/rules/remove_platform/<platform>')
+@app.route('/admin/rules/remove_platform/<platform>', methods=['POST'])
 def remove_platform(platform):
     """Remove a platform"""
     rules = load_rules()
 
-    if platform in rules['platform_requirements']:
-        del rules['platform_requirements'][platform]
-        save_rules(rules)
+    if platform not in rules['platform_requirements']:
+        return "Platform not found", 404
+
+    # Don't allow removal of default platforms
+    if platform in ['spotify', 'apple']:
+        return "Cannot remove default platforms", 400
+
+    del rules['platform_requirements'][platform]
+    save_rules(rules)
 
     return redirect(url_for('admin_dashboard'))
 
@@ -409,17 +439,32 @@ def import_rules():
     if file and file.filename.endswith('.json'):
         try:
             rules = json.load(file)
-            save_rules(rules)
-            return redirect(url_for('admin_dashboard'))
-        except:
-            return "Invalid JSON file", 400
+            # Validate the imported rules structure
+            if 'platform_requirements' in rules and 'general_requirements' in rules:
+                save_rules(rules)
+                return redirect(url_for('admin_dashboard'))
+            else:
+                return "Invalid rules file structure", 400
+        except Exception as e:
+            return f"Invalid JSON file: {str(e)}", 400
 
-    return "Invalid file format", 400
+    return "Invalid file format. Please upload a JSON file.", 400
+
+
+@app.route('/analyze', methods=['POST'])
+def analyze():
+    """Analyze artwork endpoint - placeholder for the main functionality"""
+    # This would normally contain the artwork analysis logic
+    return jsonify({
+        'status': 'success',
+        'message': 'Artwork analysis would happen here',
+        'analysis': {}
+    })
 
 
 if __name__ == '__main__':
     # Ensure rules file exists
     load_rules()
 
-    # Run the admin panel on a different port
+    # Run the application
     app.run(debug=True, port=5001)

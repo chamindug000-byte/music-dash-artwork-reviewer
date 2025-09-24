@@ -1,91 +1,344 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Edit {{ rules.name }} Rules</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit {{ rules.name }} Rules - Artwork Review System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <style>
+        :root {
+            --primary-color: #1DB954;
+            --secondary-color: #191414;
+            --success-color: #198754;
+            --warning-color: #ffc107;
+            --danger-color: #dc3545;
+            --dark-color: #212529;
+            --light-color: #f8f9fa;
+        }
+
+        body {
+            background-color: #f5f5f5;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .navbar {
+            background: linear-gradient(135deg, var(--secondary-color) 0%, var(--primary-color) 100%);
+        }
+
+        .card {
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .card-header {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+            padding: 1.2rem 1.5rem;
+            font-weight: 600;
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.25rem rgba(29, 185, 84, 0.25);
+        }
+
+        .form-check-input:checked {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        .form-check-input:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.25rem rgba(29, 185, 84, 0.25);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-color) 0%, #1ed760 100%);
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            padding: 0.5rem 1.5rem;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #1aa34a 0%, var(--primary-color) 100%);
+            transform: translateY(-2px);
+        }
+
+        .btn-outline-secondary {
+            border-radius: 8px;
+            padding: 0.5rem 1.5rem;
+        }
+
+        .info-box {
+            background: #e8f5e8;
+            border-left: 4px solid var(--primary-color);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+        }
+
+        .file-size-help {
+            font-size: 0.875rem;
+            color: #6c757d;
+            margin-top: 0.25rem;
+        }
+
+        .platform-status {
+            display: inline-block;
+            padding: 0.35rem 0.65rem;
+            border-radius: 6px;
+            font-weight: 500;
+            background-color: {% if rules.enabled %}var(--success-color){% else %}#6c757d{% endif %};
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .card-body {
+                padding: 1rem;
+            }
+
+            .btn-group {
+                width: 100%;
+            }
+
+            .btn {
+                width: 100%;
+                margin-bottom: 0.5rem;
+            }
+        }
+    </style>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container">
-            <a class="navbar-brand" href="#">Edit {{ rules.name }} Rules</a>
+            <a class="navbar-brand fw-bold" href="#">
+                <i class="bi bi-sliders me-2"></i> Edit {{ rules.name }} Rules
+            </a>
             <div class="navbar-nav ms-auto">
-                <a class="nav-link" href="{{ url_for('admin_dashboard') }}">Back to Dashboard</a>
+                <a class="nav-link" href="{{ url_for('admin_dashboard') }}">
+                    <i class="bi bi-arrow-left-circle me-1"></i> Back to Dashboard
+                </a>
             </div>
         </div>
     </nav>
 
     <div class="container mt-4">
         <div class="row justify-content-center">
-            <div class="col-md-8">
+            <div class="col-lg-10">
                 <div class="card">
-                    <div class="card-header">
-                        <h5>{{ rules.name }} Requirements</h5>
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0"><i class="bi bi-music-note me-2"></i> {{ rules.name }} Platform Requirements</h5>
+                        <span class="platform-status">
+                            {% if rules.enabled %}Enabled{% else %}Disabled{% endif %}
+                        </span>
                     </div>
                     <div class="card-body">
+                        <div class="info-box">
+                            <i class="bi bi-info-circle me-2"></i>
+                            Configure the specific requirements for {{ rules.name }} artwork submissions. These settings will be used to validate artwork for this platform.
+                        </div>
+
                         <form method="POST">
-                            <div class="mb-3 form-check form-switch">
-                                <input class="form-check-input" type="checkbox" id="enabled" name="enabled" {% if rules.enabled %}checked{% endif %}>
-                                <label class="form-check-label" for="enabled">Enable this platform</label>
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="name" class="form-label">Display Name</label>
-                                <input type="text" class="form-control" id="name" name="name" value="{{ rules.name }}" required>
+                            <!-- Platform Status -->
+                            <div class="row mb-4">
+                                <div class="col-md-12">
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="enabled" name="enabled"
+                                               {% if rules.enabled %}checked{% endif %} style="transform: scale(1.3);">
+                                        <label class="form-check-label fw-medium" for="enabled">
+                                            Enable {{ rules.name }} Platform
+                                        </label>
+                                    </div>
+                                    <div class="form-text">When disabled, this platform will be excluded from artwork analysis</div>
+                                </div>
                             </div>
 
                             <div class="row">
-                                <div class="col-md-6 mb-3">
-                                    <label for="min_size" class="form-label">Minimum Size (px)</label>
-                                    <input type="number" class="form-control" id="min_size" name="min_size" value="{{ rules.min_size }}" required min="1">
+                                <!-- Basic Information -->
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="name" class="form-label fw-medium">Display Name</label>
+                                        <input type="text" class="form-control" id="name" name="name"
+                                               value="{{ rules.name }}" required placeholder="Platform Display Name">
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="aspect_ratio" class="form-label fw-medium">Aspect Ratio</label>
+                                        <input type="number" step="0.01" class="form-control" id="aspect_ratio" name="aspect_ratio"
+                                               value="{{ rules.aspect_ratio }}" required min="0.1" max="5.0">
+                                        <div class="form-text">1.0 = Square, 1.5 = 3:2, 1.777 = 16:9</div>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="formats" class="form-label fw-medium">Supported Formats</label>
+                                        <input type="text" class="form-control" id="formats" name="formats"
+                                               value="{{ rules.formats|join(', ') }}" required placeholder="jpg, png, gif">
+                                        <div class="form-text">Comma-separated list of file formats</div>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="color_space" class="form-label fw-medium">Color Space</label>
+                                        <select class="form-select" id="color_space" name="color_space" required>
+                                            <option value="RGB" {% if rules.color_space == 'RGB' %}selected{% endif %}>RGB</option>
+                                            <option value="CMYK" {% if rules.color_space == 'CMYK' %}selected{% endif %}>CMYK</option>
+                                            <option value="Grayscale" {% if rules.color_space == 'Grayscale' %}selected{% endif %}>Grayscale</option>
+                                            <option value="RGBA" {% if rules.color_space == 'RGBA' %}selected{% endif %}>RGBA (with transparency)</option>
+                                        </select>
+                                    </div>
                                 </div>
-                                <div class="col-md-6 mb-3">
-                                    <label for="max_size" class="form-label">Maximum Size (px)</label>
-                                    <input type="number" class="form-control" id="max_size" name="max_size" value="{{ rules.max_size }}" required min="1">
+
+                                <!-- Size Requirements -->
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="min_size" class="form-label fw-medium">Minimum Size (pixels)</label>
+                                        <input type="number" class="form-control" id="min_size" name="min_size"
+                                               value="{{ rules.min_size }}" required min="1" max="10000">
+                                        <div class="form-text">Minimum width/height in pixels</div>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="max_size" class="form-label fw-medium">Maximum Size (pixels)</label>
+                                        <input type="number" class="form-control" id="max_size" name="max_size"
+                                               value="{{ rules.max_size }}" required min="1" max="20000">
+                                        <div class="form-text">Maximum width/height in pixels</div>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="min_file_size" class="form-label fw-medium">Minimum File Size (bytes)</label>
+                                        <input type="number" class="form-control" id="min_file_size" name="min_file_size"
+                                               value="{{ rules.min_file_size }}" required min="1">
+                                        <div class="file-size-help">
+                                            {{ (rules.min_file_size / 1024)|round(2) }} KB
+                                            ({{ (rules.min_file_size / (1024*1024))|round(3) }} MB)
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="max_file_size" class="form-label fw-medium">Maximum File Size (bytes)</label>
+                                        <input type="number" class="form-control" id="max_file_size" name="max_file_size"
+                                               value="{{ rules.max_file_size }}" required min="1">
+                                        <div class="file-size-help">
+                                            {{ (rules.max_file_size / 1024)|round(2) }} KB
+                                            ({{ (rules.max_file_size / (1024*1024))|round(2) }} MB)
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="dpi" class="form-label fw-medium">DPI Resolution</label>
+                                        <input type="number" class="form-control" id="dpi" name="dpi"
+                                               value="{{ rules.dpi }}" required min="1" max="1200">
+                                        <div class="form-text">Dots per inch (recommended: 72-300)</div>
+                                    </div>
                                 </div>
                             </div>
 
-                            <div class="mb-3">
-                                <label for="aspect_ratio" class="form-label">Aspect Ratio</label>
-                                <input type="number" step="0.01" class="form-control" id="aspect_ratio" name="aspect_ratio" value="{{ rules.aspect_ratio }}" required min="0.1">
-                            </div>
+                            <hr>
 
-                            <div class="mb-3">
-                                <label for="formats" class="form-label">Formats (comma-separated)</label>
-                                <input type="text" class="form-control" id="formats" name="formats" value="{{ rules.formats|join(', ') }}" required>
+                            <div class="d-flex gap-2 justify-content-end">
+                                <a href="{{ url_for('admin_dashboard') }}" class="btn btn-outline-secondary">
+                                    <i class="bi bi-x-circle me-1"></i> Cancel
+                                </a>
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="bi bi-check-circle me-1"></i> Save Changes
+                                </button>
                             </div>
-
-                            <div class="row">
-                                <div class="col-md-6 mb-3">
-                                    <label for="min_file_size" class="form-label">Minimum File Size (bytes)</label>
-                                    <input type="number" class="form-control" id="min_file_size" name="min_file_size" value="{{ rules.min_file_size }}" required min="1">
-                                </div>
-                                <div class="col-md-6 mb-3">
-                                    <label for="max_file_size" class="form-label">Maximum File Size (bytes)</label>
-                                    <input type="number" class="form-control" id="max_file_size" name="max_file_size" value="{{ rules.max_file_size }}" required min="1">
-                                </div>
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="color_space" class="form-label">Color Space</label>
-                                <select class="form-select" id="color_space" name="color_space" required>
-                                    <option value="RGB" {% if rules.color_space == 'RGB' %}selected{% endif %}>RGB</option>
-                                    <option value="CMYK" {% if rules.color_space == 'CMYK' %}selected{% endif %}>CMYK</option>
-                                    <option value="Grayscale" {% if rules.color_space == 'Grayscale' %}selected{% endif %}>Grayscale</option>
-                                </select>
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="dpi" class="form-label">DPI</label>
-                                <input type="number" class="form-control" id="dpi" name="dpi" value="{{ rules.dpi }}" required min="1">
-                            </div>
-
-                            <button type="submit" class="btn btn-primary">Save Changes</button>
-                            <a href="{{ url_for('admin_dashboard') }}" class="btn btn-secondary">Cancel</a>
                         </form>
+                    </div>
+                </div>
+
+                <!-- Help Section -->
+                <div class="mt-3">
+                    <div class="card">
+                        <div class="card-header">
+                            <h6 class="mb-0"><i class="bi bi-lightbulb me-2"></i>Platform Requirements Guide</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h6>Image Size Guidelines</h6>
+                                    <ul class="list-unstyled">
+                                        <li><i class="bi bi-check-circle text-success me-2"></i> Minimum: 640px for streaming services</li>
+                                        <li><i class="bi bi-check-circle text-success me-2"></i> Recommended: 1400-3000px for high quality</li>
+                                        <li><i class="bi bi-check-circle text-success me-2"></i> Maximum: 3000-5000px for most platforms</li>
+                                    </ul>
+                                </div>
+                                <div class="col-md-6">
+                                    <h6>File Size Recommendations</h6>
+                                    <ul class="list-unstyled">
+                                        <li><i class="bi bi-check-circle text-success me-2"></i> Minimum: 100KB for decent quality</li>
+                                        <li><i class="bi bi-check-circle text-success me-2"></i> Optimal: 500KB-2MB for web use</li>
+                                        <li><i class="bi bi-check-circle text-success me-2"></i> Maximum: 10MB for most platforms</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Update file size helpers in real-time
+        function updateFileSizeHelpers() {
+            // Update min file size helper
+            const minFileSize = document.getElementById('min_file_size').value;
+            if (minFileSize) {
+                const minKB = (minFileSize / 1024).toFixed(2);
+                const minMB = (minFileSize / (1024 * 1024)).toFixed(3);
+                document.querySelector('#min_file_size + .file-size-help').textContent =
+                    `${minKB} KB (${minMB} MB)`;
+            }
+
+            // Update max file size helper
+            const maxFileSize = document.getElementById('max_file_size').value;
+            if (maxFileSize) {
+                const maxKB = (maxFileSize / 1024).toFixed(2);
+                const maxMB = (maxFileSize / (1024 * 1024)).toFixed(2);
+                document.querySelector('#max_file_size + .file-size-help').textContent =
+                    `${maxKB} KB (${maxMB} MB)`;
+            }
+        }
+
+        // Add event listeners for file size inputs
+        document.getElementById('min_file_size').addEventListener('input', updateFileSizeHelpers);
+        document.getElementById('max_file_size').addEventListener('input', updateFileSizeHelpers);
+
+        // Update platform status badge when enabled state changes
+        document.getElementById('enabled').addEventListener('change', function() {
+            const statusBadge = document.querySelector('.platform-status');
+            if (this.checked) {
+                statusBadge.textContent = 'Enabled';
+                statusBadge.style.backgroundColor = 'var(--success-color)';
+            } else {
+                statusBadge.textContent = 'Disabled';
+                statusBadge.style.backgroundColor = '#6c757d';
+            }
+        });
+
+        // Validate that max values are greater than min values
+        document.querySelector('form').addEventListener('submit', function(e) {
+            const minSize = parseInt(document.getElementById('min_size').value);
+            const maxSize = parseInt(document.getElementById('max_size').value);
+            const minFileSize = parseInt(document.getElementById('min_file_size').value);
+            const maxFileSize = parseInt(document.getElementById('max_file_size').value);
+
+            if (minSize >= maxSize) {
+                alert('Maximum size must be greater than minimum size');
+                e.preventDefault();
+                return false;
+            }
+
+            if (minFileSize >= maxFileSize) {
+                alert('Maximum file size must be greater than minimum file size');
+                e.preventDefault();
+                return false;
+            }
+        });
+    </script>
 </body>
 </html>

@@ -1,0 +1,16 @@
+2025-09-20 08:57:01,239 - __main__ - ERROR - Error analyzing text: tesseract is not installed or it's not in your PATH. See README file for more information.
+2025-09-20 08:57:30,593 - __main__ - ERROR - Error detecting logos: 'logo_contour_area_threshold'
+2025-09-20 09:03:59,532 - __main__ - ERROR - Error analyzing text: tesseract is not installed or it's not in your PATH. See README file for more information.
+2025-09-20 09:04:26,138 - __main__ - ERROR - Error detecting logos: 'logo_contour_area_threshold'
+2025-09-20 09:06:05,708 - __main__ - ERROR - Error analyzing text: tesseract is not installed or it's not in your PATH. See README file for more information.
+2025-09-20 09:06:05,928 - __main__ - ERROR - Error detecting logos: 'logo_contour_area_threshold'
+2025-09-20 09:06:50,494 - __main__ - ERROR - Error analyzing text: tesseract is not installed or it's not in your PATH. See README file for more information.
+2025-09-20 09:06:53,878 - __main__ - ERROR - Error detecting logos: 'logo_contour_area_threshold'
+2025-09-20 09:08:59,894 - __main__ - ERROR - Error analyzing text: tesseract is not installed or it's not in your PATH. See README file for more information.
+2025-09-20 09:09:27,424 - __main__ - ERROR - Error detecting logos: 'logo_contour_area_threshold'
+2025-09-20 15:22:30,209 - __main__ - ERROR - Error detecting text with OCR: tesseract is not installed or it's not in your PATH. See README file for more information.
+2025-09-20 15:26:00,755 - __main__ - ERROR - Error detecting text with OCR: tesseract is not installed or it's not in your PATH. See README file for more information.
+2025-09-20 15:29:16,308 - __main__ - ERROR - Error detecting text with OCR: tesseract is not installed or it's not in your PATH. See README file for more information.
+2025-09-20 15:29:58,449 - __main__ - ERROR - Error detecting text with OCR: tesseract is not installed or it's not in your PATH. See README file for more information.
+2025-09-20 15:30:59,501 - __main__ - ERROR - Error detecting text with OCR: tesseract is not installed or it's not in your PATH. See README file for more information.
+2025-09-20 16:07:00,601 - __main__ - WARNING - Tesseract OCR failed: tesseract is not installed or it's not in your PATH. See README file for more information.

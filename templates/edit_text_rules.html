@@ -1,54 +1,378 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Edit Text Detection Rules</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Quality Thresholds - Artwork Review System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <style>
+        :root {
+            --primary-color: #1DB954;
+            --secondary-color: #191414;
+            --success-color: #198754;
+            --warning-color: #ffc107;
+            --danger-color: #dc3545;
+            --dark-color: #212529;
+            --light-color: #f8f9fa;
+        }
+
+        body {
+            background-color: #f5f5f5;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .navbar {
+            background: linear-gradient(135deg, var(--secondary-color) 0%, var(--primary-color) 100%);
+        }
+
+        .card {
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .card-header {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+            padding: 1.2rem 1.5rem;
+            font-weight: 600;
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.25rem rgba(29, 185, 84, 0.25);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-color) 0%, #1ed760 100%);
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            padding: 0.5rem 1.5rem;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #1aa34a 0%, var(--primary-color) 100%);
+            transform: translateY(-2px);
+        }
+
+        .btn-outline-secondary {
+            border-radius: 8px;
+            padding: 0.5rem 1.5rem;
+        }
+
+        .threshold-group {
+            margin-bottom: 1.5rem;
+            padding: 1.5rem;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .threshold-group h6 {
+            color: var(--dark-color);
+            margin-bottom: 1rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+        }
+
+        .threshold-group h6 i {
+            margin-right: 0.5rem;
+            color: var(--primary-color);
+        }
+
+        .threshold-help {
+            font-size: 0.875rem;
+            color: #6c757d;
+            margin-top: 0.25rem;
+        }
+
+        .range-indicator {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            color: #6c757d;
+            margin-top: 0.25rem;
+        }
+
+        .threshold-card {
+            transition: all 0.2s ease;
+        }
+
+        .threshold-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        @media (max-width: 768px) {
+            .threshold-group {
+                padding: 1rem;
+            }
+
+            .btn-group {
+                width: 100%;
+            }
+
+            .btn {
+                width: 100%;
+                margin-bottom: 0.5rem;
+            }
+        }
+    </style>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container">
-            <a class="navbar-brand" href="#">Edit Text Detection Rules</a>
+            <a class="navbar-brand fw-bold" href="#">
+                <i class="bi bi-sliders me-2"></i> Edit Quality Thresholds
+            </a>
             <div class="navbar-nav ms-auto">
-                <a class="nav-link" href="{{ url_for('admin_dashboard') }}">Back to Dashboard</a>
+                <a class="nav-link" href="{{ url_for('admin_dashboard') }}">
+                    <i class="bi bi-arrow-left-circle me-1"></i> Back to Dashboard
+                </a>
             </div>
         </div>
     </nav>
 
     <div class="container mt-4">
         <div class="row justify-content-center">
-            <div class="col-md-8">
+            <div class="col-lg-10">
                 <div class="card">
                     <div class="card-header">
-                        <h5>Text Detection Rules</h5>
+                        <h5 class="mb-0"><i class="bi bi-speedometer2 me-2"></i> Quality Thresholds Configuration</h5>
                     </div>
                     <div class="card-body">
+                        <div class="alert alert-info mb-4">
+                            <i class="bi bi-info-circle me-2"></i>
+                            Configure the quality assessment thresholds used to analyze artwork. These values determine how strictly the system evaluates image quality.
+                        </div>
+
                         <form method="POST">
-                            <div class="mb-3">
-                                <label for="forbidden_terms" class="form-label">Forbidden Terms (comma-separated)</label>
-                                <textarea class="form-control" id="forbidden_terms" name="forbidden_terms" rows="4" required>{{ text_rules.forbidden_terms | join(', ') }}</textarea>
-                                <div class="form-text">Terms that will trigger text detection warnings</div>
+                            <!-- Image Quality Thresholds -->
+                            <div class="threshold-group threshold-card">
+                                <h6><i class="bi bi-image"></i> Image Quality</h6>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="sharpness_min" class="form-label fw-medium">Minimum Sharpness</label>
+                                        <input type="number" step="0.1" class="form-control" id="sharpness_min" name="sharpness_min"
+                                               value="{{ thresholds.sharpness_min }}" required min="0" max="1000">
+                                        <div class="threshold-help">Higher values require sharper images (typical range: 50-200)</div>
+                                        <div class="range-indicator">
+                                            <span>Blurry</span>
+                                            <span>Sharp</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="contrast_min" class="form-label fw-medium">Minimum Contrast</label>
+                                        <input type="number" step="0.1" class="form-control" id="contrast_min" name="contrast_min"
+                                               value="{{ thresholds.contrast_min }}" required min="0" max="100">
+                                        <div class="threshold-help">Higher values require more contrast (typical range: 20-60)</div>
+                                        <div class="range-indicator">
+                                            <span>Flat</span>
+                                            <span>Contrasty</span>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
 
-                            <div class="row">
-                                <div class="col-md-6 mb-3">
-                                    <label for="min_text_length" class="form-label">Minimum Text Length</label>
-                                    <input type="number" class="form-control" id="min_text_length" name="min_text_length" value="{{ text_rules.min_text_length }}" required min="1">
-                                    <div class="form-text">Minimum characters to consider as text</div>
+                            <!-- Brightness Thresholds -->
+                            <div class="threshold-group threshold-card">
+                                <h6><i class="bi bi-brightness-high"></i> Brightness Levels</h6>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="brightness_min" class="form-label fw-medium">Minimum Brightness</label>
+                                        <input type="number" step="0.1" class="form-control" id="brightness_min" name="brightness_min"
+                                               value="{{ thresholds.brightness_min }}" required min="0" max="255">
+                                        <div class="threshold-help">Minimum acceptable brightness level</div>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="brightness_max" class="form-label fw-medium">Maximum Brightness</label>
+                                        <input type="number" step="0.1" class="form-control" id="brightness_max" name="brightness_max"
+                                               value="{{ thresholds.brightness_max }}" required min="0" max="255">
+                                        <div class="threshold-help">Maximum acceptable brightness level</div>
+                                    </div>
                                 </div>
-                                <div class="col-md-6 mb-3">
-                                    <label for="max_text_density" class="form-label">Maximum Text Density</label>
-                                    <input type="number" step="0.01" class="form-control" id="max_text_density" name="max_text_density" value="{{ text_rules.max_text_density }}" required min="0" max="1">
-                                    <div class="form-text">Maximum allowed text density in image (0-1)</div>
+                                <div class="range-indicator px-2">
+                                    <span>Dark (0)</span>
+                                    <span>Optimal (40-160)</span>
+                                    <span>Bright (255)</span>
                                 </div>
                             </div>
 
-                            <button type="submit" class="btn btn-primary">Save Changes</button>
-                            <a href="{{ url_for('admin_dashboard') }}" class="btn btn-secondary">Cancel</a>
+                            <!-- Compression Threshold -->
+                            <div class="threshold-group threshold-card">
+                                <h6><i class="bi bi-file-arrow-down"></i> Compression Quality</h6>
+                                <div class="mb-3">
+                                    <label for="compression_quality_min" class="form-label fw-medium">Minimum Compression Quality</label>
+                                    <input type="number" class="form-control" id="compression_quality_min" name="compression_quality_min"
+                                           value="{{ thresholds.compression_quality_min }}" required min="0" max="100">
+                                    <div class="threshold-help">Higher values require better compression quality (0-100 scale)</div>
+                                    <div class="range-indicator">
+                                        <span>Low Quality (0)</span>
+                                        <span>High Quality (100)</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Detection Thresholds -->
+                            <div class="threshold-group threshold-card">
+                                <h6><i class="bi bi-eye"></i> Detection Thresholds</h6>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="edge_density_watermark_threshold" class="form-label fw-medium">Watermark Detection</label>
+                                        <input type="number" step="0.01" class="form-control" id="edge_density_watermark_threshold" name="edge_density_watermark_threshold"
+                                               value="{{ thresholds.edge_density_watermark_threshold }}" required min="0" max="1">
+                                        <div class="threshold-help">Lower values = more sensitive watermark detection (0-1 scale)</div>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="text_likelihood_threshold" class="form-label fw-medium">Text Detection</label>
+                                        <input type="number" step="0.01" class="form-control" id="text_likelihood_threshold" name="text_likelihood_threshold"
+                                               value="{{ thresholds.text_likelihood_threshold }}" required min="0" max="1">
+                                        <div class="threshold-help">Lower values = more sensitive text detection (0-1 scale)</div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="pixelation_diff_threshold" class="form-label fw-medium">Pixelation Threshold</label>
+                                        <input type="number" step="0.1" class="form-control" id="pixelation_diff_threshold" name="pixelation_diff_threshold"
+                                               value="{{ thresholds.pixelation_diff_threshold }}" required min="0" max="100">
+                                        <div class="threshold-help">Lower values = more sensitive pixelation detection</div>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="color_variance_threshold" class="form-label fw-medium">Color Variance</label>
+                                        <input type="number" step="0.1" class="form-control" id="color_variance_threshold" name="color_variance_threshold"
+                                               value="{{ thresholds.color_variance_threshold }}" required min="0" max="100">
+                                        <div class="threshold-help">Detects limited color palettes (e.g., black & white images)</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Saturation Thresholds -->
+                            <div class="threshold-group threshold-card">
+                                <h6><i class="bi bi-palette"></i> Color Saturation</h6>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="saturation_min" class="form-label fw-medium">Minimum Saturation</label>
+                                        <input type="number" step="0.1" class="form-control" id="saturation_min" name="saturation_min"
+                                               value="{{ thresholds.saturation_min }}" required min="0" max="255">
+                                        <div class="threshold-help">Minimum color saturation level</div>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="saturation_max" class="form-label fw-medium">Maximum Saturation</label>
+                                        <input type="number" step="0.1" class="form-control" id="saturation_max" name="saturation_max"
+                                               value="{{ thresholds.saturation_max }}" required min="0" max="255">
+                                        <div class="threshold-help">Maximum color saturation level</div>
+                                    </div>
+                                </div>
+                                <div class="range-indicator px-2">
+                                    <span>Desaturated (0)</span>
+                                    <span>Natural (20-200)</span>
+                                    <span>Oversaturated (255)</span>
+                                </div>
+                            </div>
+
+                            <!-- Logo Detection Thresholds -->
+                            <div class="threshold-group threshold-card">
+                                <h6><i class="bi bi-tag"></i> Logo Detection</h6>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="logo_contour_area_threshold" class="form-label fw-medium">Logo Contour Area</label>
+                                        <input type="number" step="0.01" class="form-control" id="logo_contour_area_threshold" name="logo_contour_area_threshold"
+                                               value="{{ thresholds.get('logo_contour_area_threshold', 0.01) }}" required min="0" max="1">
+                                        <div class="threshold-help">Minimum contour area ratio for logo detection (0-1 scale)</div>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="logo_similarity_threshold" class="form-label fw-medium">Logo Similarity</label>
+                                        <input type="number" step="0.01" class="form-control" id="logo_similarity_threshold" name="logo_similarity_threshold"
+                                               value="{{ thresholds.get('logo_similarity_threshold', 0.7) }}" required min="0" max="1">
+                                        <div class="threshold-help">Similarity threshold for logo matching (0-1 scale)</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <hr>
+
+                            <div class="d-flex gap-2 justify-content-end">
+                                <a href="{{ url_for('admin_dashboard') }}" class="btn btn-outline-secondary">
+                                    <i class="bi bi-x-circle me-1"></i> Cancel
+                                </a>
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="bi bi-check-circle me-1"></i> Save Changes
+                                </button>
+                            </div>
                         </form>
+                    </div>
+                </div>
+
+                <!-- Help Section -->
+                <div class="mt-3">
+                    <div class="card">
+                        <div class="card-header">
+                            <h6 class="mb-0"><i class="bi bi-lightbulb me-2"></i>Threshold Guidelines</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h6>Quality Assessment Tips</h6>
+                                    <ul class="list-unstyled">
+                                        <li><i class="bi bi-arrow-right-circle text-primary me-2"></i> Lower detection thresholds = more sensitive detection</li>
+                                        <li><i class="bi bi-arrow-right-circle text-primary me-2"></i> Higher quality thresholds = stricter requirements</li>
+                                        <li><i class="bi bi-arrow-right-circle text-primary me-2"></i> Adjust thresholds based on your quality standards</li>
+                                    </ul>
+                                </div>
+                                <div class="col-md-6">
+                                    <h6>Recommended Values</h6>
+                                    <ul class="list-unstyled">
+                                        <li><i class="bi bi-check-circle text-success me-2"></i> Sharpness: 80-150</li>
+                                        <li><i class="bi bi-check-circle text-success me-2"></i> Contrast: 30-50</li>
+                                        <li><i class="bi bi-check-circle text-success me-2"></i> Compression: 70-90</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Add real-time value indicators
+        document.querySelectorAll('input[type="number"]').forEach(input => {
+            input.addEventListener('input', function() {
+                const helpText = this.nextElementSibling;
+                if (helpText && helpText.classList.contains('threshold-help')) {
+                    // Update help text with current value info if needed
+                }
+            });
+        });
+
+        // Validate that max values are greater than min values
+        document.querySelector('form').addEventListener('submit', function(e) {
+            const brightnessMin = parseFloat(document.getElementById('brightness_min').value);
+            const brightnessMax = parseFloat(document.getElementById('brightness_max').value);
+            const saturationMin = parseFloat(document.getElementById('saturation_min').value);
+            const saturationMax = parseFloat(document.getElementById('saturation_max').value);
+
+            if (brightnessMin >= brightnessMax) {
+                alert('Maximum brightness must be greater than minimum brightness');
+                e.preventDefault();
+                return false;
+            }
+
+            if (saturationMin >= saturationMax) {
+                alert('Maximum saturation must be greater than minimum saturation');
+                e.preventDefault();
+                return false;
+            }
+
+            // Validate other min/max pairs if needed
+            return true;
+        });
+    </script>
 </body>
 </html>

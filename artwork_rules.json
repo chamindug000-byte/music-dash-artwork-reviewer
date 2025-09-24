@@ -163,7 +163,7 @@
         "no_pixelated_images": {
             "description": "Not pixelated",
             "severity": "medium",
-            "enabled": true
+            "enabled": false
         },
         "no_borders_frames": {
             "description": "No borders or frames",
@@ -187,17 +187,19 @@
         }
     },
     "quality_thresholds": {
-        "sharpness_min": 100,
-        "brightness_min": 40,
-        "brightness_max": 160,
-        "contrast_min": 40,
-        "compression_quality_min": 80,
+        "sharpness_min": 100.0,
+        "brightness_min": 40.0,
+        "brightness_max": 160.0,
+        "contrast_min": 40.0,
+        "compression_quality_min": 80.0,
         "edge_density_watermark_threshold": 0.1,
         "text_likelihood_threshold": 0.05,
-        "pixelation_diff_threshold": 30,
-        "color_variance_threshold": 10,
-        "saturation_min": 20,
-        "saturation_max": 200
+        "pixelation_diff_threshold": 30.0,
+        "color_variance_threshold": 10.0,
+        "saturation_min": 20.0,
+        "saturation_max": 200.0,
+        "logo_contour_area_threshold": 0.01,
+        "logo_similarity_threshold": 0.2
     },
     "text_detection": {
         "forbidden_terms": [
@@ -230,5 +232,5 @@
         "min_text_length": 3,
         "max_text_density": 0.05
     },
-    "last_updated": "2025-08-23T10:47:24.788848"
+    "last_updated": "2025-09-21T11:06:23.870829"
 }

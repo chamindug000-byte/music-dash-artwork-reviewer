@@ -1,65 +1,289 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Edit General Rules</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit General Rules - Artwork Review System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <style>
+        :root {
+            --primary-color: #1DB954;
+            --secondary-color: #191414;
+            --success-color: #198754;
+            --warning-color: #ffc107;
+            --danger-color: #dc3545;
+            --dark-color: #212529;
+            --light-color: #f8f9fa;
+        }
+
+        body {
+            background-color: #f5f5f5;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .navbar {
+            background: linear-gradient(135deg, var(--secondary-color) 0%, var(--primary-color) 100%);
+        }
+
+        .card {
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .card-header {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+            padding: 1.2rem 1.5rem;
+            font-weight: 600;
+        }
+
+        .rule-item {
+            padding: 1rem;
+            margin-bottom: 0.75rem;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid;
+            transition: all 0.2s ease;
+        }
+
+        .rule-item:hover {
+            background: #e9ecef;
+            transform: translateX(5px);
+        }
+
+        .rule-high {
+            border-left-color: var(--danger-color);
+        }
+
+        .rule-medium {
+            border-left-color: var(--warning-color);
+        }
+
+        .rule-low {
+            border-left-color: var(--primary-color);
+        }
+
+        .form-check-input:checked {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        .form-check-input:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.25rem rgba(29, 185, 84, 0.25);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-color) 0%, #1ed760 100%);
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            padding: 0.5rem 1.5rem;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #1aa34a 0%, var(--primary-color) 100%);
+            transform: translateY(-2px);
+        }
+
+        .btn-outline-secondary {
+            border-radius: 8px;
+            padding: 0.5rem 1.5rem;
+        }
+
+        .severity-badge {
+            padding: 0.35rem 0.65rem;
+            border-radius: 6px;
+            font-weight: 500;
+        }
+
+        .badge-high {
+            background-color: var(--danger-color);
+            color: white;
+        }
+
+        .badge-medium {
+            background-color: var(--warning-color);
+            color: var(--dark-color);
+        }
+
+        .badge-low {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .rule-item {
+                padding: 0.75rem;
+            }
+
+            .btn-group {
+                width: 100%;
+            }
+
+            .btn {
+                width: 100%;
+                margin-bottom: 0.5rem;
+            }
+        }
+    </style>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container">
-            <a class="navbar-brand" href="#">Edit General Rules</a>
+            <a class="navbar-brand fw-bold" href="#">
+                <i class="bi bi-sliders me-2"></i> Edit General Rules
+            </a>
             <div class="navbar-nav ms-auto">
-                <a class="nav-link" href="{{ url_for('admin_dashboard') }}">Back to Dashboard</a>
+                <a class="nav-link" href="{{ url_for('admin_dashboard') }}">
+                    <i class="bi bi-arrow-left-circle me-1"></i> Back to Dashboard
+                </a>
             </div>
         </div>
     </nav>
 
     <div class="container mt-4">
         <div class="row justify-content-center">
-            <div class="col-md-10">
+            <div class="col-lg-10">
                 <div class="card">
                     <div class="card-header">
-                        <h5>General Requirements</h5>
+                        <h5 class="mb-0"><i class="bi bi-list-check me-2"></i> General Requirements Configuration</h5>
                     </div>
                     <div class="card-body">
+                        <div class="alert alert-info mb-4">
+                            <i class="bi bi-info-circle me-2"></i>
+                            Configure the general requirements that apply to all platforms. These rules check for common issues in artwork files.
+                        </div>
+
                         <form method="POST">
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th>Enable</th>
-                                        <th>Description</th>
-                                        <th>Severity</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
+                            <div class="row mb-4">
+                                <div class="col-md-12">
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <h6 class="mb-0">Artwork Requirements</h6>
+                                        <span class="text-muted">{{ rules|length }} rules configured</span>
+                                    </div>
+
                                     {% for rule_key, rule in rules.items() %}
-                                    <tr>
-                                        <td>
-                                            <div class="form-check form-switch">
-                                                <input class="form-check-input" type="checkbox" id="{{ rule_key }}_enabled" name="{{ rule_key }}_enabled" {% if rule.enabled %}checked{% endif %}>
+                                    <div class="rule-item rule-{{ rule.severity }}">
+                                        <div class="row align-items-center">
+                                            <div class="col-md-1">
+                                                <div class="form-check form-switch">
+                                                    <input class="form-check-input" type="checkbox"
+                                                           id="{{ rule_key }}_enabled" name="{{ rule_key }}_enabled"
+                                                           {% if rule.enabled %}checked{% endif %}
+                                                           style="transform: scale(1.2);">
+                                                </div>
                                             </div>
-                                        </td>
-                                        <td>
-                                            <input type="text" class="form-control" id="{{ rule_key }}_description" name="{{ rule_key }}_description" value="{{ rule.description }}">
-                                        </td>
-                                        <td>
-                                            <select class="form-select" id="{{ rule_key }}_severity" name="{{ rule_key }}_severity">
-                                                <option value="high" {% if rule.severity == 'high' %}selected{% endif %}>High</option>
-                                                <option value="medium" {% if rule.severity == 'medium' %}selected{% endif %}>Medium</option>
-                                                <option value="low" {% if rule.severity == 'low' %}selected{% endif %}>Low</option>
-                                            </select>
-                                        </td>
-                                    </tr>
+                                            <div class="col-md-6">
+                                                <label for="{{ rule_key }}_description" class="form-label fw-medium mb-1">Description</label>
+                                                <input type="text" class="form-control"
+                                                       id="{{ rule_key }}_description" name="{{ rule_key }}_description"
+                                                       value="{{ rule.description }}" required>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label for="{{ rule_key }}_severity" class="form-label mb-1">Severity Level</label>
+                                                <select class="form-select" id="{{ rule_key }}_severity" name="{{ rule_key }}_severity">
+                                                    <option value="high" {% if rule.severity == 'high' %}selected{% endif %}>
+                                                        High Priority
+                                                    </option>
+                                                    <option value="medium" {% if rule.severity == 'medium' %}selected{% endif %}>
+                                                        Medium Priority
+                                                    </option>
+                                                    <option value="low" {% if rule.severity == 'low' %}selected{% endif %}>
+                                                        Low Priority
+                                                    </option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-2 text-center">
+                                                <span class="severity-badge badge-{{ rule.severity }}">
+                                                    {{ rule.severity|upper }}
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <input type="hidden" name="rule_key" value="{{ rule_key }}">
+                                    </div>
                                     {% endfor %}
-                                </tbody>
-                            </table>
-                            <button type="submit" class="btn btn-primary">Save Changes</button>
-                            <a href="{{ url_for('admin_dashboard') }}" class="btn btn-secondary">Cancel</a>
+                                </div>
+                            </div>
+
+                            <div class="d-flex gap-2 justify-content-end">
+                                <a href="{{ url_for('admin_dashboard') }}" class="btn btn-outline-secondary">
+                                    <i class="bi bi-x-circle me-1"></i> Cancel
+                                </a>
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="bi bi-check-circle me-1"></i> Save Changes
+                                </button>
+                            </div>
                         </form>
+                    </div>
+                </div>
+
+                <div class="mt-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <h6 class="card-title"><i class="bi bi-lightbulb me-2"></i>Severity Guidelines</h6>
+                            <div class="row">
+                                <div class="col-md-4 mb-2">
+                                    <span class="badge badge-high me-2">HIGH</span>
+                                    <small class="text-muted">Critical issues that will cause rejection</small>
+                                </div>
+                                <div class="col-md-4 mb-2">
+                                    <span class="badge badge-medium me-2">MEDIUM</span>
+                                    <small class="text-muted">Important issues that need attention</small>
+                                </div>
+                                <div class="col-md-4 mb-2">
+                                    <span class="badge badge-low me-2">LOW</span>
+                                    <small class="text-muted">Minor issues or recommendations</small>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Update severity badge when selection changes
+        document.querySelectorAll('select[name$="_severity"]').forEach(select => {
+            select.addEventListener('change', function() {
+                const badge = this.closest('.rule-item').querySelector('.severity-badge');
+                const severity = this.value;
+
+                // Remove all existing classes
+                badge.classList.remove('badge-high', 'badge-medium', 'badge-low');
+
+                // Add the appropriate class
+                badge.classList.add('badge-' + severity);
+                badge.textContent = severity.toUpperCase();
+
+                // Update the rule item border color
+                const ruleItem = this.closest('.rule-item');
+                ruleItem.classList.remove('rule-high', 'rule-medium', 'rule-low');
+                ruleItem.classList.add('rule-' + severity);
+            });
+        });
+
+        // Toggle rule item appearance based on enabled state
+        document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                const ruleItem = this.closest('.rule-item');
+                if (this.checked) {
+                    ruleItem.style.opacity = '1';
+                } else {
+                    ruleItem.style.opacity = '0.7';
+                }
+            });
+
+            // Set initial state
+            const ruleItem = checkbox.closest('.rule-item');
+            if (!checkbox.checked) {
+                ruleItem.style.opacity = '0.7';
+            }
+        });
+    </script>
 </body>
 </html>

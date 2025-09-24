@@ -3,814 +3,943 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Music Artwork Review System</title>
+    <title>Artwork Compliance Analyzer</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --success-color: #27ae60;
+            --warning-color: #f39c12;
+            --danger-color: #e74c3c;
+            --light-color: #ecf0f1;
+            --dark-color: #2c3e50;
         }
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #1DB954 0%, #1ed760 50%, #191414 100%);
-            min-height: 100vh;
-            padding: 20px;
+            background-color: #f8f9fa;
+            color: #333;
         }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
+        .navbar {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
 
-        .header {
-            background: linear-gradient(135deg, #191414 0%, #1DB954 100%);
-            color: white;
-            padding: 30px;
-            text-align: center;
-        }
-
-        .header h1 {
-            font-size: 2.5em;
-            margin-bottom: 10px;
-            font-weight: 700;
-        }
-
-        .header p {
-            font-size: 1.1em;
-            opacity: 0.9;
-        }
-
-        .main-content {
-            padding: 40px;
-        }
-
-        .upload-section {
-            background: #f8f9fa;
-            border: 3px dashed #1DB954;
-            border-radius: 15px;
-            padding: 40px;
-            text-align: center;
-            margin-bottom: 30px;
-            transition: all 0.3s ease;
-        }
-
-        .upload-section:hover {
-            border-color: #1ed760;
-            background: #f0f8ff;
-        }
-
-        .upload-section.dragover {
-            border-color: #1ed760;
-            background: #e8f5e8;
-            transform: scale(1.02);
-        }
-
-        .upload-button {
-            background: linear-gradient(135deg, #1DB954 0%, #1ed760 100%);
-            color: white;
+        .card {
             border: none;
-            padding: 15px 30px;
-            border-radius: 50px;
-            font-size: 1.1em;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(29, 185, 84, 0.3);
-        }
-
-        .upload-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(29, 185, 84, 0.4);
-        }
-
-        .file-input {
-            display: none;
-        }
-
-        .loading {
-            display: none;
-            text-align: center;
-            padding: 20px;
-        }
-
-        .spinner {
-            border: 4px solid '), #f3f3f3';
-            border-top: 4px solid #1DB954;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 15px;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        .preview-section {
-            display: none;
-            margin-bottom: 30px;
-        }
-
-        .image-preview {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        .preview-image {
-            max-width: 300px;
-            max-height: 300px;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-        }
-
-        .results-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-            gap: 30px;
-            margin-top: 30px;
-        }
-
-        .platform-results {
-            background: white;
-            border-radius: 15px;
-            padding: 25px;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
-            border-left: 5px solid;
-        }
-
-        .platform-header {
-            display: flex;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
-        .platform-icon {
-            width: 40px;
-            height: 40px;
-            margin-right: 15px;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: bold;
-        }
-
-        .platform-title {
-            font-size: 1.4em;
-            font-weight: 600;
-            color: #333;
-        }
-
-        .check-item {
-            display: flex;
-            align-items: center;
-            margin-bottom: 12px;
-            padding: 10px;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-        }
-
-        .check-item:hover {
-            background: #f8f9fa;
-        }
-
-        .check-icon {
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            margin-right: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            font-size: 0.8em;
-        }
-
-        .pass {
-            background: #28a745;
-            color: white;
-        }
-
-        .fail {
-            background: #dc3545;
-            color: white;
-        }
-
-        .warning {
-            background: #ffc107;
-            color: #333;
-        }
-
-        .check-details {
-            flex: 1;
-        }
-
-        .check-title {
-            font-weight: 600;
-            color: #333;
-            margin-bottom: 4px;
-        }
-
-        .check-message {
-            font-size: 0.9em;
-            color: #666;
-            margin-bottom: 4px;
-        }
-
-        .check-value {
-            font-size: 0.85em;
-            color: #888;
-        }
-
-        .platform-status {
-            text-align: center;
-            padding: 15px;
-            margin: 20px 0;
             border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            margin-bottom: 20px;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+
+        .card-header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            border-radius: 10px 10px 0 0 !important;
+            padding: 15px 20px;
             font-weight: 600;
+        }
+
+        .status-badge {
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.85rem;
         }
 
         .status-pass {
-            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            background-color: var(--success-color);
+            color: white;
+        }
+
+        .status-fail {
+            background-color: var(--danger-color);
             color: white;
         }
 
         .status-warning {
-            background: linear-gradient(135deg, #ffc107 0%, #ffca28 100%);
-            color: #333;
-        }
-
-        .status-fail {
-            background: linear-gradient(135deg, #dc3545 0%, #fd7e14 100%);
+            background-color: var(--warning-color);
             color: white;
         }
 
         .status-disabled {
-            background: linear-gradient(135deg, #6c757d 0%, #adb5bd 100%);
+            background-color: #95a5a6;
             color: white;
         }
 
-        .specifications {
-            background: #f8f9fa;
-            border-radius: 15px;
-            padding: 25px;
-            margin-top: 30px;
+        .progress {
+            height: 10px;
+            border-radius: 5px;
+            margin-bottom: 10px;
         }
 
-        .spec-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 20px;
+        .specs-table {
+            width: 100%;
+            border-collapse: collapse;
         }
 
-        .spec-item {
-            background: white;
-            padding: 15px;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        .specs-table td {
+            padding: 8px 12px;
+            border-bottom: 1px solid #eee;
         }
 
-        .spec-label {
-            font-weight: 600;
-            color: #333;
-            margin-bottom: 5px;
-            font-size: 0.9em;
-        }
-
-        .spec-value {
-            color: #666;
-            font-size: 1.1em;
-        }
-
-        .recommendations {
-            background: #e3f2fd;
-            border: 1px solid #2196f3;
-            border-radius: 15px;
-            padding: 25px;
-            margin-top: 30px;
-        }
-
-        .recommendations h3 {
-            color: #1976d2;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-        }
-
-        .recommendations h3:before {
-            content: "💡";
-            margin-right: 10px;
-        }
-
-        .recommendation-item {
-            padding: 12px 0;
-            border-bottom: 1px solid #bbdefb;
-            display: flex;
-            align-items: flex-start;
-        }
-
-        .recommendation-item:last-child {
+        .specs-table tr:last-child td {
             border-bottom: none;
         }
 
-        .priority-indicator {
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            margin-right: 12px;
-            flex-shrink: 0;
-            margin-top: 2px;
+        .specs-table .label {
+            font-weight: 600;
+            color: var(--primary-color);
+            width: 40%;
+        }
+
+        .platform-card {
+            border-left: 4px solid var(--secondary-color);
+        }
+
+        .platform-approved {
+            border-left-color: var(--success-color);
+        }
+
+        .platform-rejected {
+            border-left-color: var(--danger-color);
+        }
+
+        .recommendation-item {
+            padding: 10px 15px;
+            border-left: 3px solid #ddd;
+            margin-bottom: 10px;
+            background-color: #f9f9f9;
+            border-radius: 0 5px 5px 0;
         }
 
         .priority-high {
-            background: #dc3545;
+            border-left-color: var(--danger-color);
         }
 
         .priority-medium {
-            background: #ffc107;
+            border-left-color: var(--warning-color);
         }
 
         .priority-low {
-            background: #28a745;
+            border-left-color: var(--success-color);
         }
 
-        .recommendation-text {
-            flex: 1;
+        .analysis-section {
+            margin-bottom: 30px;
         }
 
-        .recommendation-category {
-            font-size: 0.8em;
-            color: #666;
-            margin-top: 4px;
-            font-style: italic;
+        .summary-card {
+            background: linear-gradient(135deg, #FFFFFF 0%, #FFFFFF 100%);
+            color: white;
         }
 
-        .error-message {
-            background: #ffebee;
-            color: #c62828;
-            padding: 15px;
+        .upload-area {
+            border: 2px dashed #ccc;
             border-radius: 10px;
-            margin: 20px 0;
+            padding: 40px 20px;
             text-align: center;
+            transition: all 0.3s ease;
+            background-color: #fafafa;
+            cursor: pointer;
+        }
+
+        .upload-area:hover {
+            border-color: var(--secondary-color);
+            background-color: #f0f8ff;
+        }
+
+        .upload-area.dragover {
+            border-color: var(--secondary-color);
+            background-color: #e6f2ff;
+        }
+
+        .loading-spinner {
+            display: none;
+            text-align: center;
+            padding: 30px;
+        }
+
+        .results-container {
             display: none;
         }
 
-        .admin-link {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
-            padding: 10px 15px;
-            border-radius: 20px;
-            text-decoration: none;
-            font-weight: 600;
-            transition: all 0.3s ease;
+        .tab-content {
+            padding: 20px 0;
         }
 
-        .admin-link:hover {
-            background: rgba(255, 255, 255, 0.3);
-            transform: translateY(-2px);
+        .nav-tabs .nav-link {
+            color: var(--primary-color);
+            font-weight: 500;
+            border: none;
+            padding: 12px 20px;
         }
+
+        .nav-tabs .nav-link.active {
+            background-color: white;
+            border-bottom: 3px solid var(--secondary-color);
+            color: var(--secondary-color);
+        }
+
+        .key-finding {
+            padding: 10px 15px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        .finding-critical {
+            background-color: #ffeaea;
+            border-left: 4px solid var(--danger-color);
+        }
+
+        .finding-positive {
+            background-color: #eaffea;
+            border-left: 4px solid var(--success-color);
+        }
+
+        .logo {
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: white;
+        }
+
+        .restart-btn {
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        .uploaded-image {
+    max-width: 100%;
+    max-height: 300px;
+    border-radius: 8px;
+    margin: 15px auto; /* auto will center it horizontally */
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    display: block; /* ensure it's treated as a block element */
+}
+
 
         @media (max-width: 768px) {
-            .results-grid, .spec-grid {
-                grid-template-columns: 1fr;
+            .card {
+                margin-bottom: 15px;
             }
 
-            .header h1 {
-                font-size: 2em;
-            }
-
-            .main-content {
-                padding: 20px;
-            }
-
-            .admin-link {
-                position: relative;
-                top: 0;
-                right: 0;
-                display: block;
-                text-align: center;
-                margin-bottom: 20px;
+            .specs-table .label {
+                width: 50%;
             }
         }
     </style>
 </head>
 <body>
-    <a href="/admin" class="admin-link">⚙️ Admin Panel</a>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand logo" href="#">
+                <i class="fas fa-images me-2"></i>Artwork Analyzer
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#"><i class="fas fa-home me-1"></i> Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/admin"><i class="fas fa-cog me-1"></i> Admin</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
 
-    <div class="container">
-        <div class="header">
-            <h1>🎵 Music Artwork Review System</h1>
-            <p>Validate your artwork against music platform requirements</p>
+    <!-- Main Content -->
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <span><i class="fas fa-upload me-2"></i>Upload Artwork</span>
+                    </div>
+                    <div class="card-body">
+                        <div id="uploadArea" class="upload-area">
+                            <i class="fas fa-cloud-upload-alt fa-3x mb-3 text-muted"></i>
+                            <h4>Drag & Drop your artwork here</h4>
+                            <p class="text-muted">or click to browse files</p>
+                            <p class="small text-muted">Supports JPG, PNG up to 10MB</p>
+                            <input type="file" id="fileInput" accept=".jpg,.jpeg,.png" style="display: none;">
+                            <button class="btn btn-primary mt-2" id="browseBtn">Browse Files</button>
+                        </div>
+
+                        <!-- Uploaded Image Preview -->
+                        <div id="imagePreview" class="text-center mt-3">
+                            <img id="uploadedImage" class="uploaded-image" alt="Uploaded artwork">
+                        </div>
+
+                        <div id="loadingSpinner" class="loading-spinner">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                            <p class="mt-3">Analyzing your artwork... This may take a few seconds.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <div class="main-content">
-            <div class="upload-section" id="uploadSection">
-                <h3 style="margin-bottom: 20px; color: #333;">Upload Your Artwork</h3>
-                <p style="margin-bottom: 20px; color: #666;">Drag and drop your image file here or click to browse</p>
-                <button class="upload-button" onclick="document.getElementById('fileInput').click()">
-                    📁 Choose File
-                </button>
-                <input type="file" id="fileInput" class="file-input" accept="image/*">
-                <p style="margin-top: 15px; font-size: 0.9em; color: #888;">
-                    Supported formats: JPG, PNG, GIF, BMP, WEBP
-                </p>
+        <!-- Results Section -->
+        <div id="resultsContainer" class="results-container">
+            <!-- Summary Card -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="card summary-card">
+                        <div class="card-body text-center py-4">
+                            <h2 id="overallStatus" class="mb-3">Artwork Analysis Complete</h2>
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <h3 id="eligibilityStatus">Eligible</h3>
+                                    <p>Overall Status</p>
+                                </div>
+                                <div class="col-md-9">
+                                    <div id="platformApprovals" class="d-flex justify-content-center flex-wrap">
+                                        <!-- Platform approval badges will be inserted here -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
-            <div class="loading" id="loadingSection">
-                <div class="spinner"></div>
-                <p>Analyzing your artwork...</p>
+            <!-- Restart Button -->
+            <div class="row">
+                <div class="col-12 text-center">
+                    <button id="restartBtn" class="btn btn-outline-primary restart-btn">
+                        <i class="fas fa-redo me-2"></i>Review New Artwork
+                    </button>
+                </div>
             </div>
 
-            <div class="error-message" id="errorMessage"></div>
+            <!-- Tabs Navigation -->
+            <ul class="nav nav-tabs mt-4" id="resultsTabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="summary-tab" data-bs-toggle="tab" data-bs-target="#summary" type="button" role="tab">Summary</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="platforms-tab" data-bs-toggle="tab" data-bs-target="#platforms" type="button" role="tab">Platform Results</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="technical-tab" data-bs-toggle="tab" data-bs-target="#technical" type="button" role="tab">Technical Details</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="recommendations-tab" data-bs-toggle="tab" data-bs-target="#recommendations" type="button" role="tab">Recommendations</button>
+                </li>
+            </ul>
 
-            <div class="preview-section" id="previewSection">
-                <div class="image-preview" id="imagePreview"></div>
+            <!-- Tab Content -->
+            <div class="tab-content" id="resultsTabContent">
+                <!-- Summary Tab -->
+                <div class="tab-pane fade show active" id="summary" role="tabpanel">
+                    <div class="row">
+                        <!-- Key Findings -->
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <i class="fas fa-exclamation-triangle me-2"></i>Key Findings
+                                </div>
+                                <div class="card-body">
+                                    <div id="keyFindings">
+                                        <!-- Key findings will be inserted here -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
-                <div id="platformStatuses" class="results-grid"></div>
+                        <!-- Content Analysis -->
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <i class="fas fa-search me-2"></i>Content Analysis
+                                </div>
+                                <div class="card-body">
+                                    <table class="specs-table">
+                                        <tbody id="contentAnalysis">
+                                            <!-- Content analysis will be inserted here -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-                <div class="specifications">
-                    <h3 style="margin-bottom: 20px; color: #333;">📊 Image Specifications</h3>
-                    <div class="spec-grid" id="specGrid"></div>
+                    <!-- Platform Compatibility -->
+                    <div class="row mt-4">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <i class="fas fa-check-circle me-2"></i>Platform Compatibility
+                                </div>
+                                <div class="card-body">
+                                    <div class="row" id="platformCompatibility">
+                                        <!-- Platform compatibility will be inserted here -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="recommendations" id="recommendationsSection" style="display: none;">
-                    <h3>Improvement Recommendations</h3>
-                    <div id="recommendationsList"></div>
+                <!-- Platforms Tab -->
+                <div class="tab-pane fade" id="platforms" role="tabpanel">
+                    <div id="platformResults">
+                        <!-- Platform results will be inserted here -->
+                    </div>
+                </div>
+
+                <!-- Technical Details Tab -->
+                <div class="tab-pane fade" id="technical" role="tabpanel">
+                    <div class="row">
+                        <!-- Specifications -->
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <i class="fas fa-info-circle me-2"></i>Image Specifications
+                                </div>
+                                <div class="card-body">
+                                    <table class="specs-table">
+                                        <tbody id="specifications">
+                                            <!-- Specifications will be inserted here -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Quality Metrics -->
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <i class="fas fa-chart-line me-2"></i>Quality Metrics
+                                </div>
+                                <div class="card-body">
+                                    <table class="specs-table">
+                                        <tbody id="qualityMetrics">
+                                            <!-- Quality metrics will be inserted here -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Detailed Analysis -->
+                    <div class="row mt-4">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <i class="fas fa-chart-bar me-2"></i>Detailed Analysis
+                                </div>
+                                <div class="card-body">
+                                    <div id="detailedAnalysis">
+                                        <!-- Detailed analysis will be inserted here -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recommendations Tab -->
+                <div class="tab-pane fade" id="recommendations" role="tabpanel">
+                    <div id="recommendationsList">
+                        <!-- Recommendations will be inserted here -->
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        class ArtworkReviewer {
-            constructor() {
-                this.initializeEventListeners();
-            }
+        document.addEventListener('DOMContentLoaded', function() {
+            const fileInput = document.getElementById('fileInput');
+            const uploadArea = document.getElementById('uploadArea');
+            const browseBtn = document.getElementById('browseBtn');
+            const loadingSpinner = document.getElementById('loadingSpinner');
+            const resultsContainer = document.getElementById('resultsContainer');
+            const restartBtn = document.getElementById('restartBtn');
+            const uploadedImage = document.getElementById('uploadedImage');
+            const imagePreview = document.getElementById('imagePreview');
 
-            initializeEventListeners() {
-                const fileInput = document.getElementById('fileInput');
-                const uploadSection = document.getElementById('uploadSection');
+            // Browse button click handler
+            browseBtn.addEventListener('click', function(e) {
+                e.stopPropagation(); // Prevent event from bubbling to upload area
+                fileInput.click();
+            });
 
-                fileInput.addEventListener('change', (e) => this.handleFileSelect(e));
-
-                // Drag and drop
-                uploadSection.addEventListener('dragover', (e) => {
-                    e.preventDefault();
-                    uploadSection.classList.add('dragover');
-                });
-
-                uploadSection.addEventListener('dragleave', () => {
-                    uploadSection.classList.remove('dragover');
-                });
-
-                uploadSection.addEventListener('drop', (e) => {
-                    e.preventDefault();
-                    uploadSection.classList.remove('dragover');
-                    const files = e.dataTransfer.files;
-                    if (files.length > 0) {
-                        this.processFile(files[0]);
-                    }
-                });
-            }
-
-            handleFileSelect(event) {
-                const file = event.target.files[0];
-                if (file) {
-                    this.processFile(file);
+            // File input change handler
+            fileInput.addEventListener('change', function(e) {
+                if (e.target.files.length > 0) {
+                    handleFileUpload(e.target.files[0]);
                 }
-            }
+            });
 
-            processFile(file) {
-                if (!file.type.startsWith('image/')) {
-                    this.showError('Please select an image file');
+            // Drag and drop handlers
+            uploadArea.addEventListener('dragover', function(e) {
+                e.preventDefault();
+                uploadArea.classList.add('dragover');
+            });
+
+            uploadArea.addEventListener('dragleave', function() {
+                uploadArea.classList.remove('dragover');
+            });
+
+            uploadArea.addEventListener('drop', function(e) {
+                e.preventDefault();
+                uploadArea.classList.remove('dragover');
+
+                if (e.dataTransfer.files.length > 0) {
+                    handleFileUpload(e.dataTransfer.files[0]);
+                }
+            });
+
+            // Click on upload area handler - only trigger if not clicking the browse button
+            uploadArea.addEventListener('click', function(e) {
+                // Only trigger if the click wasn't on the browse button
+                if (e.target !== browseBtn && !browseBtn.contains(e.target)) {
+                    fileInput.click();
+                }
+            });
+
+            // Restart button handler
+            restartBtn.addEventListener('click', function() {
+                // Reset the form
+                fileInput.value = '';
+                resultsContainer.style.display = 'none';
+                uploadArea.style.display = 'block';
+                uploadedImage.style.display = 'none';
+                imagePreview.style.display = 'none';
+
+                // Scroll to top
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+
+            // File upload handler
+            function handleFileUpload(file) {
+                // Validate file type
+                const validTypes = ['image/jpeg', 'image/jpg', 'image/png'];
+                if (!validTypes.includes(file.type)) {
+                    alert('Please upload a JPG or PNG image file.');
                     return;
                 }
 
-                // Show loading state
-                document.getElementById('loadingSection').style.display = 'block';
-                document.getElementById('previewSection').style.display = 'none';
-                document.getElementById('errorMessage').style.display = 'none';
+                // Validate file size (10MB)
+                if (file.size > 10 * 1024 * 1024) {
+                    alert('File size must be less than 10MB.');
+                    return;
+                }
 
-                // Create form data for upload
+                // Display image preview
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    uploadedImage.src = e.target.result;
+                    uploadedImage.style.display = 'block';
+                    imagePreview.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+
+                // Show loading spinner
+                uploadArea.style.display = 'none';
+                loadingSpinner.style.display = 'block';
+
+                // Prepare form data
                 const formData = new FormData();
                 formData.append('file', file);
 
-                // Send to server for analysis
+                // Send AJAX request
                 fetch('/analyze', {
                     method: 'POST',
                     body: formData
                 })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Server error: ' + response.status);
-                    }
-                    return response.json();
-                })
+                .then(response => response.json())
                 .then(data => {
-                    if (data.error) {
-                        throw new Error(data.error);
-                    }
-                    this.displayResults(data, file);
+                    // Hide loading spinner
+                    loadingSpinner.style.display = 'none';
+
+                    // Display results
+                    displayResults(data);
+                    resultsContainer.style.display = 'block';
+
+                    // Scroll to results
+                    resultsContainer.scrollIntoView({ behavior: 'smooth' });
                 })
                 .catch(error => {
-                    this.showError(error.message || 'An error occurred while analyzing the image');
-                })
-                .finally(() => {
-                    document.getElementById('loadingSection').style.display = 'none';
+                    console.error('Error:', error);
+                    loadingSpinner.style.display = 'none';
+                    uploadArea.style.display = 'block';
+                    uploadedImage.style.display = 'none';
+                    imagePreview.style.display = 'none';
+                    alert('An error occurred while analyzing the image. Please try again.');
                 });
             }
 
-            displayResults(data, file) {
-                console.log('Received data:', data); // Debug log
-
-                // Show preview section
-                document.getElementById('previewSection').style.display = 'block';
-
-                // Create preview image
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    const imagePreview = document.getElementById('imagePreview');
-                    imagePreview.innerHTML = `<img src="${e.target.result}" alt="Preview" class="preview-image">`;
-                };
-                reader.readAsDataURL(file);
-
-                // Display specifications
-                this.displaySpecifications(data.analysis);
-
-                // Display platform results with configs
-                this.displayPlatformResults(data.platform_results, data.overall_statuses, data.platform_configs);
-
-                // Display recommendations
-                this.displayRecommendations(data.recommendations);
-            }
-
-            displayPlatformResults(platformResults, overallStatuses, platformConfigs) {
-                const platformStatusesContainer = document.getElementById('platformStatuses');
-                platformStatusesContainer.innerHTML = '';
-
-                // Default platform styles for known platforms
-                const defaultPlatformStyles = {
-                    'spotify': { color: '#1DB954', icon: 'S', name: 'Spotify' },
-                    'apple': { color: '#007AFF', icon: 'A', name: 'Apple Music' },
-                    'youtube': { color: '#FF0000', icon: 'Y', name: 'YouTube Music' },
-                    'amazon': { color: '#FF9900', icon: 'A', name: 'Amazon Music' },
-                    'deezer': { color: '#00C7F2', icon: 'D', name: 'Deezer' },
-                    'tidal': { color: '#000000', icon: 'T', name: 'Tidal' },
-                    'soundcloud': { color: '#FF7700', icon: 'S', name: 'SoundCloud' }
-                };
-
-                // Check if platformResults is an object
-                if (platformResults && typeof platformResults === 'object') {
-                    for (const [platform, results] of Object.entries(platformResults)) {
-                        // Get platform style - use config name if available, otherwise generate from platform key
-                        let platformStyle;
-                        if (platformConfigs && platformConfigs[platform]) {
-                            platformStyle = {
-                                name: platformConfigs[platform].name || this.formatPlatformName(platform),
-                                icon: this.getPlatformIcon(platform, platformConfigs[platform].name),
-                                color: this.generatePlatformColor(platform)
-                            };
-                        } else if (defaultPlatformStyles[platform]) {
-                            platformStyle = defaultPlatformStyles[platform];
-                        } else {
-                            // Generate styles for new platforms dynamically
-                            platformStyle = {
-                                name: this.formatPlatformName(platform),
-                                icon: this.getPlatformIcon(platform),
-                                color: this.generatePlatformColor(platform)
-                            };
-                        }
-
-                        const status = overallStatuses ? overallStatuses[platform] : 'unknown';
-                        const isEnabled = platformConfigs && platformConfigs[platform] ? platformConfigs[platform].enabled : true;
-
-                        const platformDiv = document.createElement('div');
-                        platformDiv.className = `platform-results ${platform}-results`;
-
-                        // Add custom CSS for platform color if it's a new platform
-                        if (!defaultPlatformStyles[platform]) {
-                            const style = document.createElement('style');
-                            style.textContent = `
-                                .${platform}-results {
-                                    border-left-color: ${platformStyle.color} !important;
-                                }
-                                .${platform}-icon {
-                                    background: ${platformStyle.color} !important;
-                                }
-                            `;
-                            document.head.appendChild(style);
-                        }
-
-                        if (!isEnabled) {
-                            platformDiv.style.opacity = '0.6';
-                        }
-
-                        platformDiv.innerHTML = `
-                            <div class="platform-header">
-                                <div class="platform-icon ${platform}-icon">${platformStyle.icon}</div>
-                                <div class="platform-title">${platformStyle.name}</div>
-                                ${!isEnabled ? '<span style="margin-left: auto; color: #888; font-size: 0.8em;">(Disabled)</span>' : ''}
-                            </div>
-                            <div class="platform-status status-${status}">
-                                ${this.getStatusMessage(status, platformStyle.name, isEnabled)}
-                            </div>
-                            <div id="${platform}Results"></div>
-                        `;
-
-                        platformStatusesContainer.appendChild(platformDiv);
-
-                        // Display individual check results
-                        const container = document.getElementById(`${platform}Results`);
-                        this.displayPlatformCheckResults(container, results, isEnabled);
-                    }
-                } else {
-                    platformStatusesContainer.innerHTML = '<p>No platform results available</p>';
-                }
-            }
-
-            // Helper methods for dynamic platform styling
-            formatPlatformName(platformKey) {
-                // Convert snake_case or kebab-case to Title Case
-                return platformKey
-                    .split(/[_-]/)
-                    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-                    .join(' ');
-            }
-
-            getPlatformIcon(platform, platformName = '') {
-                // Try to get first character from platform name, otherwise use platform key
-                if (platformName && platformName.length > 0) {
-                    return platformName.charAt(0).toUpperCase();
-                }
-                return platform.charAt(0).toUpperCase();
-            }
-
-            generatePlatformColor(platform) {
-                // Generate a consistent color based on platform name hash
-                let hash = 0;
-                for (let i = 0; i < platform.length; i++) {
-                    hash = platform.charCodeAt(i) + ((hash << 5) - hash);
-                }
-
-                const colors = [
-                    '#FF6B6B', '#4ECDC4', '#45B7D1', '#FFA5A5', '#77DD77',
-                    '#FFDC68', '#AEC6CF', '#836953', '#FDFD96', '#B19CD9',
-                    '#FFB347', '#C23B22', '#6A5ACD', '#FF69B4', '#03C03C',
-                    '#FF8C00', '#7B68EE', '#20B2AA', '#FF6347', '#9370DB'
-                ];
-
-                return colors[Math.abs(hash) % colors.length];
-            }
-
-            displayPlatformCheckResults(container, results, isEnabled) {
-                container.innerHTML = '';
-
-                if (!isEnabled) {
-                    container.innerHTML = '<p style="color: #888; text-align: center;">Platform disabled in admin settings</p>';
+            // Display results function
+            function displayResults(data) {
+                // Check for errors
+                if (data.error) {
+                    alert('Error: ' + data.error);
+                    uploadArea.style.display = 'block';
                     return;
                 }
 
-                if (results && Array.isArray(results) && results.length > 0) {
-                    results.forEach(result => {
-                        const item = document.createElement('div');
-                        item.className = 'check-item';
+                // Update overall status
+                const overallStatus = document.getElementById('overallStatus');
+                const eligibilityStatus = document.getElementById('eligibilityStatus');
 
-                        const icon = result.status === 'pass' ? '✓' :
-                                    result.status === 'warning' ? '⚠' : '✗';
+                if (data.summary_report.overall_eligibility.eligible) {
+                    overallStatus.innerHTML = '<i class="fas fa-check-circle me-2"></i>Artwork Analysis Complete - Eligible for Release';
+                    overallStatus.className = 'mb-3 text-success';
+                    eligibilityStatus.innerHTML = 'ELIGIBLE';
+                    eligibilityStatus.className = 'text-success';
+                } else {
+                    overallStatus.innerHTML = '<i class="fas fa-exclamation-circle me-2"></i>Artwork Analysis Complete - Not Eligible';
+                    overallStatus.className = 'mb-3 text-danger';
+                    eligibilityStatus.innerHTML = 'NOT ELIGIBLE';
+                    eligibilityStatus.className = 'text-danger';
+                }
 
-                        item.innerHTML = `
-                            <div class="check-icon ${result.status}">${icon}</div>
-                            <div class="check-details">
-                                <div class="check-title">${result.test}</div>
-                                <div class="check-message">${result.message}</div>
-                                <div class="check-value">${result.value} (Required: ${result.required})</div>
+                // Update platform approvals
+                const platformApprovals = document.getElementById('platformApprovals');
+                platformApprovals.innerHTML = '';
+
+                for (const [platform, config] of Object.entries(data.platform_configs)) {
+                    if (config.enabled) {
+                        const status = data.approval_statuses[platform];
+                        const badgeClass = status.approved ? 'status-pass' : 'status-fail';
+
+                        const badge = document.createElement('div');
+                        badge.className = `status-badge ${badgeClass} m-2`;
+                        badge.innerHTML = `<i class="fas fa-${status.approved ? 'check' : 'times'} me-1"></i> ${config.name}: ${status.score}%`;
+
+                        platformApprovals.appendChild(badge);
+                    }
+                }
+
+                // Update key findings
+                const keyFindings = document.getElementById('keyFindings');
+                keyFindings.innerHTML = '';
+
+                if (data.summary_report.key_findings.length === 0) {
+                    keyFindings.innerHTML = '<p class="text-success"><i class="fas fa-check-circle me-2"></i>No critical issues detected</p>';
+                } else {
+                    data.summary_report.key_findings.forEach(finding => {
+                        const findingDiv = document.createElement('div');
+                        findingDiv.className = `key-finding finding-${finding.type === 'critical' ? 'critical' : 'positive'}`;
+                        findingDiv.innerHTML = `<i class="fas fa-${finding.type === 'critical' ? 'exclamation-triangle' : 'check-circle'} me-2"></i> ${finding.message}`;
+                        keyFindings.appendChild(findingDiv);
+                    });
+                }
+
+                // Update content analysis
+                const contentAnalysis = document.getElementById('contentAnalysis');
+                const contentData = data.summary_report.content_analysis;
+
+                contentAnalysis.innerHTML = `
+                    <tr>
+                        <td class="label">Text Detected</td>
+                        <td>${contentData.text_detected ? 'Yes (' + contentData.text_count + ' elements)' : 'No'}</td>
+                    </tr>
+                    <tr>
+                        <td class="label">Offensive Language</td>
+                        <td>${contentData.bad_words_found ? '<span class="text-danger">Yes</span>' : '<span class="text-success">No</span>'}</td>
+                    </tr>
+                    <tr>
+                        <td class="label">Weapons Content</td>
+                        <td>${contentData.weapons_detected ? '<span class="text-danger">Yes</span>' : '<span class="text-success">No</span>'}</td>
+                    </tr>
+                    <tr>
+                        <td class="label">Watermarks</td>
+                        <td>${contentData.watermarks_detected ? '<span class="text-danger">Yes</span>' : '<span class="text-success">No</span>'}</td>
+                    </tr>
+                    <tr>
+                        <td class="label">Logos/Branding</td>
+                        <td>${contentData.logos_detected ? '<span class="text-danger">Yes (' + contentData.logo_count + ' detected)</span>' : '<span class="text-success">No</span>'}</td>
+                    </tr>
+                `;
+
+                // Update platform compatibility
+                const platformCompatibility = document.getElementById('platformCompatibility');
+                platformCompatibility.innerHTML = '';
+
+                for (const [platform, compatibility] of Object.entries(data.summary_report.platform_compatibility)) {
+                    const platformConfig = data.platform_configs[platform];
+                    if (platformConfig.enabled) {
+                        const col = document.createElement('div');
+                        col.className = 'col-md-6 mb-3';
+
+                        const cardClass = compatibility.approved ? 'platform-approved' : 'platform-rejected';
+
+                        col.innerHTML = `
+                            <div class="card platform-card ${cardClass}">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <h5 class="card-title mb-0">${platformConfig.name}</h5>
+                                        <span class="status-badge ${compatibility.approved ? 'status-pass' : 'status-fail'}">
+                                            ${compatibility.approved ? 'Approved' : 'Rejected'}
+                                        </span>
+                                    </div>
+                                    <div class="progress">
+                                        <div class="progress-bar ${compatibility.approved ? 'bg-success' : 'bg-danger'}"
+                                             role="progressbar"
+                                             style="width: ${compatibility.score}%"
+                                             aria-valuenow="${compatibility.score}"
+                                             aria-valuemin="0"
+                                             aria-valuemax="100">
+                                        </div>
+                                    </div>
+                                    <p class="small mb-0">Score: ${compatibility.score}% (Threshold: ${compatibility.threshold}%)</p>
+                                    <p class="small mb-0">Passed: ${compatibility.pass_count} | Failed: ${compatibility.fail_count} | Warnings: ${compatibility.warning_count}</p>
+                                </div>
                             </div>
                         `;
 
-                        container.appendChild(item);
-                    });
-                } else {
-                    container.innerHTML = '<p>No test results available</p>';
+                        platformCompatibility.appendChild(col);
+                    }
                 }
-            }
 
-            getStatusMessage(status, platformName, isEnabled) {
-                if (!isEnabled) {
-                    return `🔴 ${platformName}: Platform disabled in admin settings`;
+                // Update platform results
+                const platformResults = document.getElementById('platformResults');
+                platformResults.innerHTML = '';
+
+                for (const [platform, results] of Object.entries(data.platform_results)) {
+                    const platformConfig = data.platform_configs[platform];
+                    if (platformConfig.enabled) {
+                        const platformCard = document.createElement('div');
+                        platformCard.className = 'card mb-4';
+
+                        let resultsHTML = '';
+                        results.forEach(result => {
+                            const icon = result.status === 'pass' ? 'fa-check-circle text-success' :
+                                        result.status === 'warning' ? 'fa-exclamation-triangle text-warning' :
+                                        'fa-times-circle text-danger';
+
+                            resultsHTML += `
+                                <div class="d-flex justify-content-between align-items-center p-3 border-bottom">
+                                    <div>
+                                        <i class="fas ${icon} me-2"></i>
+                                        <span>${result.test}</span>
+                                        <small class="text-muted d-block">${result.message}</small>
+                                    </div>
+                                    <span class="status-badge status-${result.status}">${result.status.toUpperCase()}</span>
+                                </div>
+                            `;
+                        });
+
+                        platformCard.innerHTML = `
+                            <div class="card-header">
+                                <i class="fas fa-music me-2"></i>${platformConfig.name} Requirements
+                            </div>
+                            <div class="card-body p-0">
+                                ${resultsHTML}
+                            </div>
+                        `;
+
+                        platformResults.appendChild(platformCard);
+                    }
                 }
-                if (status === 'pass') {
-                    return `✅ ${platformName}: Artwork meets all requirements!`;
-                } else if (status === 'warning') {
-                    return `⚠️ ${platformName}: Artwork has some issues that need attention`;
-                } else if (status === 'fail') {
-                    return `❌ ${platformName}: Artwork requires significant changes`;
-                } else if (status === 'disabled') {
-                    return `🔴 ${platformName}: Platform disabled`;
-                } else {
-                    return `❓ ${platformName}: Status unknown`;
-                }
-            }
 
-            displaySpecifications(analysis) {
-                const specGrid = document.getElementById('specGrid');
-                specGrid.innerHTML = '';
+                // Update specifications
+                const specifications = document.getElementById('specifications');
+                const specs = data.specifications;
 
-                if (analysis) {
-                    const specs = [
-                        { label: 'Dimensions', value: `${analysis.width} × ${analysis.height} pixels` },
-                        { label: 'File Size', value: this.formatFileSize(analysis.size) },
-                        { label: 'Format', value: analysis.format ? analysis.format.toUpperCase() : 'Unknown' },
-                        { label: 'Aspect Ratio', value: analysis.aspect_ratio ? `${analysis.aspect_ratio.toFixed(3)}:1` : 'Unknown' },
-                        { label: 'Color Mode', value: analysis.mode || 'Unknown' },
-                        { label: 'DPI', value: analysis.dpi ? `${analysis.dpi} DPI` : 'Unknown' },
-                        { label: 'Sharpness', value: analysis.sharpness ? analysis.sharpness.toFixed(2) : 'Unknown' },
-                        { label: 'Brightness', value: analysis.brightness ? analysis.brightness.toFixed(2) : 'Unknown' },
-                        { label: 'Contrast', value: analysis.contrast ? analysis.contrast.toFixed(2) : 'Unknown' },
-                        { label: 'Compression Quality', value: analysis.compression_quality ? `${analysis.compression_quality}/100` : 'Unknown' },
-                        { label: 'Has Transparency', value: analysis.has_transparency !== undefined ? (analysis.has_transparency ? 'Yes' : 'No') : 'Unknown' },
-                        { label: 'Has Watermark', value: analysis.has_watermark !== undefined ? (analysis.has_watermark ? 'Yes' : 'No') : 'Unknown' },
-                        { label: 'Has Text', value: analysis.has_text !== undefined ? (analysis.has_text ? 'Yes' : 'No') : 'Unknown' },
-                        { label: 'Is Blurry', value: analysis.is_blurry !== undefined ? (analysis.is_blurry ? 'Yes' : 'No') : 'Unknown' },
-                        { label: 'Is Pixelated', value: analysis.is_pixelated !== undefined ? (analysis.is_pixelated ? 'Yes' : 'No') : 'Unknown' }
-                    ];
-                            specGrid.innerHTML = specs.map(spec => `
-                        <div class="spec-item">
-                            <div class="spec-label">${spec.label}</div>
-                            <div class="spec-value">${spec.value}</div>
+                specifications.innerHTML = `
+                    <tr>
+                        <td class="label">Dimensions</td>
+                        <td>${specs.dimensions}</td>
+                    </tr>
+                    <tr>
+                        <td class="label">File Size</td>
+                        <td>${specs.file_size}</td>
+                    </tr>
+                    <tr>
+                        <td class="label">Format</td>
+                        <td>${specs.format}</td>
+                    </tr>
+                    <tr>
+                        <td class="label">Aspect Ratio</td>
+                        <td>${specs.aspect_ratio}</td>
+                    </tr>
+                    <tr>
+                        <td class="label">Color Mode</td>
+                        <td>${specs.color_mode}</td>
+                    </tr>
+                    <tr>
+                        <td class="label">DPI</td>
+                        <td>${specs.dpi}</td>
+                    </tr>
+                `;
+
+                // Update quality metrics
+                const qualityMetrics = document.getElementById('qualityMetrics');
+                const analysis = data.analysis;
+
+                qualityMetrics.innerHTML = `
+                    <tr>
+                        <td class="label">Sharpness</td>
+                        <td>
+                            <div class="progress" style="height: 8px;">
+                                <div class="progress-bar bg-success" role="progressbar"
+                                     style="width: ${Math.min(100, analysis.sharpness/5)}%">
+                                </div>
+                            </div>
+                            <small>${analysis.sharpness.toFixed(2)}</small>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="label">Brightness</td>
+                        <td>
+                            <div class="progress" style="height: 8px;">
+                                <div class="progress-bar bg-warning" role="progressbar"
+                                     style="width: ${Math.min(100, analysis.brightness/2.55)}%">
+                                </div>
+                            </div>
+                            <small>${analysis.brightness.toFixed(2)}</small>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="label">Contrast</td>
+                        <td>
+                            <div class="progress" style="height: 8px;">
+                                <div class="progress-bar bg-info" role="progressbar"
+                                     style="width: ${Math.min(100, analysis.contrast/2.55)}%">
+                                </div>
+                            </div>
+                            <small>${analysis.contrast.toFixed(2)}</small>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="label">Compression Quality</td>
+                        <td>
+                            <div class="progress" style="height: 8px;">
+                                <div class="progress-bar bg-primary" role="progressbar"
+                                     style="width: ${analysis.compression_quality}%">
+                                </div>
+                            </div>
+                            <small>${analysis.compression_quality}%</small>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="label">Processing Time</td>
+                        <td>${specs.processing_time}</td>
+                    </tr>
+                `;
+
+                // Update detailed analysis
+                const detailedAnalysis = document.getElementById('detailedAnalysis');
+
+                let detailedHTML = `
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6>Text Analysis</h6>
+                            <p>Detected Text: ${analysis.detected_text.length} elements</p>
+                            <p>Text Confidence: ${analysis.text_confidence ? analysis.text_confidence.toFixed(2) + '%' : 'N/A'}</p>
+                            <p>Artistic Text: ${analysis.text_analysis.is_artistic ? 'Yes' : 'No'}</p>
                         </div>
-                    `).join('');
-                } else {
-                    specGrid.innerHTML = '<p>No analysis data available</p>';
-                }
-            }
+                        <div class="col-md-6">
+                            <h6>Image Quality</h6>
+                            <p>Blurry: ${analysis.is_blurry ? '<span class="text-danger">Yes</span>' : '<span class="text-success">No</span>'}</p>
+                            <p>Transparency: ${analysis.has_transparency ? 'Yes' : 'No'}</p>
+                            <p>Grayscale: ${analysis.color_analysis.is_grayscale ? 'Yes' : 'No'}</p>
+                        </div>
+                    </div>
+                `;
 
-            displayRecommendations(recommendations) {
-                const recommendationsSection = document.getElementById('recommendationsSection');
+                if (analysis.detected_text.length > 0) {
+                    detailedHTML += `
+                        <div class="mt-4">
+                            <h6>Detected Text Content</h6>
+                            <div class="bg-light p-3 rounded" style="max-height: 200px; overflow-y: auto;">
+                                <ul class="mb-0">
+                    `;
+
+                    analysis.detected_text.forEach(text => {
+                        detailedHTML += `<li>"${text.text}" (Confidence: ${text.confidence.toFixed(1)}%)</li>`;
+                    });
+
+                    detailedHTML += `
+                                </ul>
+                            </div>
+                        </div>
+                    `;
+                }
+
+                detailedAnalysis.innerHTML = detailedHTML;
+
+                // Update recommendations
                 const recommendationsList = document.getElementById('recommendationsList');
                 recommendationsList.innerHTML = '';
 
-                if (recommendations && typeof recommendations === 'object' && Object.keys(recommendations).length > 0) {
-                    recommendationsSection.style.display = 'block';
+                let hasRecommendations = false;
 
-                    // Display recommendations for each platform
-                    for (const [platform, platformRecs] of Object.entries(recommendations)) {
-                        if (platformRecs && platformRecs.length > 0) {
-                            const platformHeader = document.createElement('h4');
-                            platformHeader.style.marginTop = '15px';
-                            platformHeader.style.marginBottom = '10px';
-                            platformHeader.style.color = '#1976d2';
-                            platformHeader.textContent = `${platform.charAt(0).toUpperCase() + platform.slice(1)} Recommendations:`;
-                            recommendationsList.appendChild(platformHeader);
+                for (const [platform, recs] of Object.entries(data.recommendations)) {
+                    const platformConfig = data.platform_configs[platform];
+                    if (platformConfig.enabled && recs.length > 0) {
+                        hasRecommendations = true;
 
-                            platformRecs.forEach(rec => {
-                                const recItem = document.createElement('div');
-                                recItem.className = 'recommendation-item';
-                                recItem.innerHTML = `
-                                    <div class="priority-indicator priority-${rec.priority}"></div>
-                                    <div class="recommendation-text">
-                                        ${rec.message}
-                                        <div class="recommendation-category">${rec.category}</div>
+                        const platformRecCard = document.createElement('div');
+                        platformRecCard.className = 'card mb-4';
+
+                        let recsHTML = '';
+                        recs.forEach(rec => {
+                            recsHTML += `
+                                <div class="recommendation-item priority-${rec.priority}">
+                                    <div class="d-flex justify-content-between align-items-start">
+                                        <div>
+                                            <h6>${rec.message}</h6>
+                                            <small class="text-muted">Category: ${rec.category}</small>
+                                        </div>
+                                        <span class="badge bg-${rec.priority === 'high' ? 'danger' : rec.priority === 'medium' ? 'warning' : 'success'}">
+                                            ${rec.priority.toUpperCase()}
+                                        </span>
                                     </div>
-                                `;
-                                recommendationsList.appendChild(recItem);
-                            });
-                        }
+                                </div>
+                            `;
+                        });
+
+                        platformRecCard.innerHTML = `
+                            <div class="card-header">
+                                <i class="fas fa-lightbulb me-2"></i>Recommendations for ${platformConfig.name}
+                            </div>
+                            <div class="card-body">
+                                ${recsHTML}
+                            </div>
+                        `;
+
+                        recommendationsList.appendChild(platformRecCard);
                     }
-                } else {
-                    recommendationsSection.style.display = 'none';
+                }
+
+                if (!hasRecommendations) {
+                    recommendationsList.innerHTML = `
+                        <div class="card">
+                            <div class="card-body text-center py-5">
+                                <i class="fas fa-check-circle fa-3x text-success mb-3"></i>
+                                <h4>No Recommendations Needed</h4>
+                                <p class="text-muted">Your artwork meets all requirements for the enabled platforms.</p>
+                            </div>
+                        </div>
+                    `;
                 }
             }
-
-            showError(message) {
-                const errorDiv = document.getElementById('errorMessage');
-                errorDiv.textContent = message;
-                errorDiv.style.display = 'block';
-                document.getElementById('loadingSection').style.display = 'none';
-            }
-
-            formatFileSize(bytes) {
-                if (bytes === 0) return '0 Bytes';
-                const k = 1024;
-                const sizes = ['Bytes', 'KB', 'MB', 'GB'];
-                const i = Math.floor(Math.log(bytes) / Math.log(k));
-                return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
-            }
-        }
-
-        // Initialize the application
-        document.addEventListener('DOMContentLoaded', () => {
-            new ArtworkReviewer();
         });
     </script>
 </body>
